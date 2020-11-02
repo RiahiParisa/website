@@ -1,0 +1,196 @@
+---
+title: Effect size of a tag variant (binary outcome)
+author: ''
+date: '2020-11-01'
+slug: effect-size-of-a-tag-variant-binary-outcome
+categories: [derivation]
+tags:
+  - effect size
+  - LD
+  - tag variant
+subtitle: ''
+summary: ''
+authors: [admin]
+lastmod: '2020-11-01T12:54:03-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+## Motivation
+
+Recently, I've been quantifying the effect of population stratification on biases in variant effect size estimates in GWAS. For this purpose, I needed to derive the relationship between the effect size of a (non-causal) SNP and the effect size of a causal variant ($\beta_{causal}$) in terms of the LD ($r$) between the two variants. I've always taken for granted that it was $r\beta_{causal}$ and that made intuitive sense but didn't really know where it came from. So I derived it but soon found an old paper that had worked this out sometime ago. I decided to post this anyway, in case it's useful. I'm using some of their notations (as it's cleaner than mine) but sticking to my derivation because it's more explicit.
+
+## Model the effect of causal variant on disease
+
+Suppose there are two biallelic loci, A and B, where A is the causal locus (alleles at this locus have a causal effect on the phenotype) and B is a biallelic SNP in LD with A. 
+
+Let:
+
+* $Y \in \{0,1\}$ indicate disease status, where 0 indicates being healthy and 1 indicates having the disease.
+
+* $A \in \{0,1\}$ indicate whether or not a haplotype carries the non-reference (risk) allele at the causal variant A. Note that the terms 'reference' and 'non-reference' are arbitrary and are introduced only to clarify which alleles I am talking about.
+
+We can model the effect of the causal variant on disease risk using a logistic regression model:
+
+$$log \left( \frac{\pi}{1-\pi} \right) =\mu + \beta_A G + e$$
+
+where the left hand side is the log odds of developing the disease, $G$ represents the number of risk alleles, $\beta_A$ represents the effect size, and $e$ is some random error.
+
+Let the penetrance of the alleles at the causal locus be:
+
+$$\begin{aligned}
+P(Y = 1|A = 0) = a_0,~~ and ~~P(Y = 1|A = 1) = a_1
+\end{aligned}$$ 
+
+Note, that $a_0 = \mu + e$ and $a_1 = \mu + \beta_A + e$. Then, assuming an additive model (i.e. no dominance; additional risk alleles increase the risk by the same amount), we can get the effect size $\beta_A$ by subtraction:
+
+$$\begin{aligned}
+& P(Y = 1|A = 1) - P(Y = 1|A = 0) \\
+= & a_1 - a_0 \\
+= &  \mu + \beta_A + e - \mu -e \\
+= & \beta_A
+\end{aligned}$$
+
+Similarly, we can write down the effect size of the marker locus. Let $P(Y = 1|B = 0) = b_0$ and $P(Y = 1|B = 1) = b_1$. Then the effect size is:
+
+$$\beta_B = b_0 - b_1$$
+
+Our goal is to derive the effect size of the marker, given the effect size of the causal variant and the LD between the two variants. To do so, let's first write down the LD between the two variants as their correlation coefficient $r$.
+
+## Modeling the LD between locus 1 and 2
+
+We can represent the correlation between the two loci as:
+
+$$r = \frac{ f_{AB} - f_A f_B }{\sqrt{f_A (1-f_A) f_B (1-f_B)}}$$
+
+where $f_A = P(A = 1)$ and $f_B = P(B = 1)$ are the allele frequencies at locus A and B, respectively, and $f_{AB}$ is the frequency of the haplotype carrying non-reference alleles at both loci (i.e. $P(A = 1,B = 1)$). We need to further simplify $f_{AB}$ in terms of the conditional probability of observing the risk allele at locus A given that we know the allele at B.
+
+Let $P(A = 1|B = 0) = q_0$ and $P(A = 1|B = 1) = q_1$
+
+Then, the frequency of the $f_{AB}$ haplotype is: 
+
+$$\begin{aligned}
+f_{AB} = & P(A = 1,B = 1) \\
+= & P(A = 1|B = 1)P(B = 1) \\
+= & q_1 f_B
+\end{aligned}$$
+
+Similarly, we can write down the frequencies of the other three haplotypes:
+
+Then, the numerator of $r$ is:
+
+$$f_{AB} - f_A f_B = q_1 f_B - f_A f_B$$
+Now, we need to get rid of $f_A$, which we can write in terms of $f_B$ by marginalizing over B.
+
+$$\begin{aligned}
+& f_A = P(A = 1) \\
+& = P(A = 1,B = 1) + P(A = 1,B = 0) \\
+& = q_1f_B + q_0(1 - f_B)
+\end{aligned}$$
+
+Note that we can get $P(A = 1, B = 0)$ in the same way as we got $P(A = 1, B = 1)$ above:
+
+$$\begin{aligned}
+& P(A = 0,B = 0) \\
+= & P(A = 0|B = 0)P(B = 0) \\
+= & (1 - q_1)(1- f_B) \\\\
+\end{aligned}$$
+
+Then, 
+
+$$\begin{aligned}
+f_{AB} - f_A f_B & = f_Bq_1 - f_B \{q_1f_B + q_0(1 - f_B)\} \\
+& = f_B(1 - f_B)(q_1 - q_0)
+\end{aligned}$$
+
+and $r$ becomes:
+
+$$\begin{aligned}
+r & = \frac{f_B(1 - f_B)(q_1 - q_0)}{\sqrt{f_B(1-f_B)}\sqrt{f_A(1-f_A)}} \\
+& = (q_1 - q_0)\frac{\sqrt{f_B(1-f_B)}}{\sqrt{f_A(1-f_A)}}
+\end{aligned}$$
+
+In practice, the genotypes are normalized to unit variance so that $f_B(1-f_B) = f_A(1-f_A)$. If that's the case (which we will assume), 
+
+$$r = q_1 - q_0$$
+
+## Model the effect of the tag variant (B) on disease
+
+$$\begin{aligned}
+& P(Y = 1|B = 0) = \frac{P(Y = 1,B = 0)}{P(B = 0)}
+\end{aligned}$$
+
+B's effect depends on the effect of A so we need to marginalize over A.
+
+$$\begin{aligned}
+& P(Y = 1, B = 0) \\
+= & P(Y = 1, B=0|A = 0)P(A = 0) +\\
+= & P(Y = 1, B=0|A = 1)P(A = 1)
+\end{aligned}$$
+
+The effect of B on $Y$ are independent (conditional on A). Thus,
+
+$$\begin{aligned}
+& P(Y = 1,B = 0|A = 0)P(A = 0) \\
+= & P(Y = 1|A = 0)P(B = 0|A = 0)P(A = 0) \\ 
+= & a_0 \frac{P(B = 0, A = 0)}{P(A = 0)}P(A = 0) \\
+= & a_0(1-q_0)(1-f_B)
+\end{aligned}$$
+
+Similarly,
+
+$$\begin{aligned}
+& P(Y = 1,B = 0|A = 1)P(A = 1) \\
+= & P(Y = 1|A = 1)P(B = 0|A = 1)P(A = 1) \\
+= & a_1 \frac{P(B = 0, A = 1)}{P(A = 1)}P(A = 1) \\
+= & a_1 q_0 (1-f_B)
+\end{aligned}$$
+
+Therefore, $P(Y = 1, B = 0)$ becomes:
+
+$$\begin{aligned}
+P(Y = 1,B = 0) & = a_0(1-q_0)(1-f_B) + a_1 q_0 (1-f_B)\\
+& = (1 - f_B) \{a_0(1-q_0) + a_1q_0 \}
+\end{aligned}$$
+
+And $P(Y = 1|B = 0)$ is: 
+
+$$\begin{aligned}
+P(Y = 1|B = 0) & = (1 - f_B) \frac{a_0(1-q_0) + a_1q_0}{1-f_B} \\
+= & a_0(1-q_0) + a_1q_0
+\end{aligned}$$
+
+We can do the same thing for $b_1 = P(Y = 1|B = 1)$:
+
+$$\begin{aligned}
+& P(Y = 1|B = 1) \\
+= & \frac{P(Y = 1, B = 1)}{P(B = 1)} \\
+= & P(Y = 1, B = 1|A = 0)P(A = 0) + \\
+& \frac{P(Y = 1, B = 1|A = 1)P(A = 1)}{P(B = 1)} \\
+= & P(Y = 1| A = 0)P(B = 1|A = 0)P(A = 0) + \\
+ & \frac{P(Y = 1|A = 1)P(B = 1|A = 1)P(A = 1)}{P(B = 1)} \\
+= & \frac{a_0(1 - q_1)f_B + a_1q_1f_B}{f_B} \\
+= &a_0(1 - q_1) +a_1q_1
+\end{aligned}$$
+
+The effect size of B ($\beta_B$) is:
+
+$$\begin{aligned}
+& P(Y = 1|B = 1) - P(Y = 1|B = 1) \\
+= & b_1 - b_0 \\
+= & a_0(1 - q_0) + a_1(1 - q_0) - \{a_0(1 - q_1) + a_1q_1\} \\
+= & a_0 - a_0q_0 + a_1q_0 - a_1q_1 - a_0 + a_0q_1 \\
+= & q_0(a_1 - a_0) + q_1(a_1 - a_0) \\
+= & (q_1 - q_0)(a_1 - a_0) \\
+= & (q_1 - q_0)\beta_A
+\end{aligned}$$
+
+We know from earlier that $q_1 - q_0 = r$ so $\beta_B = r\beta_A$.
+
+I was going to the standard error and power of the variant in this post as well but it's gotten a bit long so I may do that in the next post. 
+
+
