@@ -2,6 +2,7 @@
 title: Effect size of a tag variant (binary outcome)
 author: ''
 date: '2020-11-01'
+draft: true
 slug: effect-size-of-a-tag-variant-binary-outcome
 categories: [derivation]
 tags:
@@ -24,12 +25,13 @@ projects: []
 <script src="{{< relref "post/2020-11-01-effect-size-of-a-tag-variant-binary-outcome/index.en.html" >}}index.en_files/anchor-sections/anchor-sections.js"></script>
 
 
-<div id="motivation" class="section level2">
-<h2>Motivation</h2>
-<p>Recently, I’ve been quantifying the effect of population stratification on biases in variant effect size estimates in GWAS. For this purpose, I needed to derive the relationship between the effect size of a (non-causal) SNP and the effect size of a causal variant (<span class="math inline">\(\beta_{causal}\)</span>) in terms of the LD (<span class="math inline">\(r\)</span>) between the two variants. I’ve always taken for granted that it was <span class="math inline">\(r\beta_{causal}\)</span> and that made intuitive sense but didn’t really know where it came from. So I derived it but soon found an old paper that had worked this out sometime ago. I decided to post this anyway, in case it’s useful. I’m using some of their notations (as it’s cleaner than mine) but sticking to my derivation because it’s more explicit.</p>
+<div id="motivation" class="section level4">
+<h4>Motivation</h4>
+<p>Recently, I’ve been studying the effect of population stratification on GWAS effect size estimates. For this purpose, I needed to work out the effect size of a tag SNP as a function of its LD with the causal variant. I’ve always taken for granted that this is equal to <span class="math inline">\(r\beta_{causal}\)</span>, where <span class="math inline">\(r\)</span> is the LD between the two variants and <span class="math inline">\(\beta_{causal}\)</span> is the causal effect size. This makes intuitive sense qualitatively because we expect tag SNPs that are further away from causal variants to have smaller effect sizes (and vice versa). But I couldn’t intuit why this exact relationship. There are some derivations for this in the early GWAS literature (e.g. see <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>) but none that were very explicit so I decided to work it out and post in case others find it helpful.</p>
+<p>Side warning: I would not recommend reading this on a smaller screen (e.g. phone) as the math might not render fully.</p>
 </div>
-<div id="model-the-effect-of-causal-variant-on-disease" class="section level2">
-<h2>Model the effect of causal variant on disease</h2>
+<div id="modeling-the-effect-of-causal-variant-on-disease-risk" class="section level4">
+<h4>Modeling the effect of causal variant on disease risk</h4>
 <p>Suppose there are two biallelic loci, A and B, where A is the causal locus (alleles at this locus have a causal effect on the phenotype) and B is a biallelic SNP in LD with A.</p>
 <p>Let:</p>
 <ul>
@@ -39,6 +41,7 @@ projects: []
 <p>We can model the effect of the causal variant on disease risk using a logistic regression model:</p>
 <p><span class="math display">\[log \left( \frac{\pi}{1-\pi} \right) =\mu + \beta_A G + e\]</span></p>
 <p>where the left hand side is the log odds of developing the disease, <span class="math inline">\(G\)</span> represents the number of risk alleles, <span class="math inline">\(\beta_A\)</span> represents the effect size, and <span class="math inline">\(e\)</span> is some random error.</p>
+<p>We can measure the effect of the risk allele in terms of its penetrances, i.e., the probability that an individual develops the disease given that they carry the allele.</p>
 <p>Let the penetrance of the alleles at the causal locus be:</p>
 <p><span class="math display">\[\begin{aligned}
 P(Y = 1|A = 0) = a_0,~~ and ~~P(Y = 1|A = 1) = a_1
@@ -50,15 +53,15 @@ P(Y = 1|A = 0) = a_0,~~ and ~~P(Y = 1|A = 1) = a_1
 = &amp;  \mu + \beta_A + e - \mu -e \\
 = &amp; \beta_A
 \end{aligned}\]</span></p>
-<p>Similarly, we can write down the effect size of the marker locus. Let <span class="math inline">\(P(Y = 1|B = 0) = b_0\)</span> and <span class="math inline">\(P(Y = 1|B = 1) = b_1\)</span>. Then the effect size is:</p>
+<p>Similarly, we can write down the effect size of the marker locus. Let the penetrances be <span class="math inline">\(P(Y = 1|B = 0) = b_0\)</span> and <span class="math inline">\(P(Y = 1|B = 1) = b_1\)</span>. Then the effect size is:</p>
 <p><span class="math display">\[\beta_B = b_0 - b_1\]</span></p>
-<p>Our goal is to derive the effect size of the marker, given the effect size of the causal variant and the LD between the two variants. To do so, let’s first write down the LD between the two variants as their correlation coefficient <span class="math inline">\(r\)</span>.</p>
+<p>Our goal is to answer the question: what is the relationship between the effect of a tag SNP and the effect of a causal variant given the LD between them? To do so, let’s first write down the LD between the two variants.</p>
 </div>
-<div id="modeling-the-ld-between-locus-1-and-2" class="section level2">
-<h2>Modeling the LD between locus 1 and 2</h2>
-<p>We can represent the correlation between the two loci as:</p>
+<div id="modeling-the-ld-between-locus-a-and-b" class="section level4">
+<h4>Modeling the LD between locus A and B</h4>
+<p>We can represent the LD as the correlation between the two loci:</p>
 <p><span class="math display">\[r = \frac{ f_{AB} - f_A f_B }{\sqrt{f_A (1-f_A) f_B (1-f_B)}}\]</span></p>
-<p>where <span class="math inline">\(f_A = P(A = 1)\)</span> and <span class="math inline">\(f_B = P(B = 1)\)</span> are the allele frequencies at locus A and B, respectively, and <span class="math inline">\(f_{AB}\)</span> is the frequency of the haplotype carrying non-reference alleles at both loci (i.e. <span class="math inline">\(P(A = 1,B = 1)\)</span>). We need to further simplify <span class="math inline">\(f_{AB}\)</span> in terms of the conditional probability of observing the risk allele at locus A given that we know the allele at B.</p>
+<p>where <span class="math inline">\(f_A = P(A = 1)\)</span> and <span class="math inline">\(f_B = P(B = 1)\)</span> are the allele frequencies at locus A and B, respectively, and <span class="math inline">\(f_{AB}\)</span> is the frequency of the haplotype carrying non-reference alleles at both loci (i.e. <span class="math inline">\(f_{AB} = P(A = 1,B = 1)\)</span>). We need to further simplify <span class="math inline">\(f_{AB}\)</span> in terms of the conditional probability of observing the risk allele at locus A given that we know the allele at B.</p>
 <p>Let <span class="math inline">\(P(A = 1|B = 0) = q_0\)</span> and <span class="math inline">\(P(A = 1|B = 1) = q_1\)</span></p>
 <p>Then, the frequency of the <span class="math inline">\(f_{AB}\)</span> haplotype is:</p>
 <p><span class="math display">\[\begin{aligned}
@@ -66,20 +69,19 @@ f_{AB} = &amp; P(A = 1,B = 1) \\
 = &amp; P(A = 1|B = 1)P(B = 1) \\
 = &amp; q_1 f_B
 \end{aligned}\]</span></p>
-<p>Similarly, we can write down the frequencies of the other three haplotypes:</p>
-<p>Then, the numerator of <span class="math inline">\(r\)</span> is:</p>
-<p><span class="math display">\[f_{AB} - f_A f_B = q_1 f_B - f_A f_B\]</span>
-Now, we need to get rid of <span class="math inline">\(f_A\)</span>, which we can write in terms of <span class="math inline">\(f_B\)</span> by marginalizing over B.</p>
+<p>We can similarly express the frequency of other haplotypes. For example:</p>
+<p><span class="math display">\[\begin{aligned}
+f_{Ab} = &amp; P(A = 1,B = 0) \\
+= &amp; P(A = 1|B = 0)P(B = 0) \\
+= &amp; q_0 (1 - f_B)
+\end{aligned}\]</span></p>
+<p>Substituting <span class="math inline">\(f_{AB}\)</span> in the numerator of <span class="math inline">\(r\)</span>, we get:</p>
+<p><span class="math display">\[f_{AB} - f_A f_B = q_1 f_B - f_A f_B\]</span></p>
+<p>We can further simplify this by expressing <span class="math inline">\(f_A\)</span> in terms of <span class="math inline">\(f_B\)</span> by marginalization.</p>
 <p><span class="math display">\[\begin{aligned}
 &amp; f_A = P(A = 1) \\
 &amp; = P(A = 1,B = 1) + P(A = 1,B = 0) \\
 &amp; = q_1f_B + q_0(1 - f_B)
-\end{aligned}\]</span></p>
-<p>Note that we can get <span class="math inline">\(P(A = 1, B = 0)\)</span> in the same way as we got <span class="math inline">\(P(A = 1, B = 1)\)</span> above:</p>
-<p><span class="math display">\[\begin{aligned}
-&amp; P(A = 0,B = 0) \\
-= &amp; P(A = 0|B = 0)P(B = 0) \\
-= &amp; (1 - q_1)(1- f_B) \\\\
 \end{aligned}\]</span></p>
 <p>Then,</p>
 <p><span class="math display">\[\begin{aligned}
@@ -91,15 +93,15 @@ f_{AB} - f_A f_B &amp; = f_Bq_1 - f_B \{q_1f_B + q_0(1 - f_B)\} \\
 r &amp; = \frac{f_B(1 - f_B)(q_1 - q_0)}{\sqrt{f_B(1-f_B)}\sqrt{f_A(1-f_A)}} \\
 &amp; = (q_1 - q_0)\frac{\sqrt{f_B(1-f_B)}}{\sqrt{f_A(1-f_A)}}
 \end{aligned}\]</span></p>
-<p>In practice, the genotypes are normalized to unit variance so that <span class="math inline">\(f_B(1-f_B) = f_A(1-f_A)\)</span>. If that’s the case (which we will assume),</p>
-<p><span class="math display">\[r = q_1 - q_0\]</span></p>
 </div>
-<div id="model-the-effect-of-the-tag-variant-b-on-disease" class="section level2">
-<h2>Model the effect of the tag variant (B) on disease</h2>
+<div id="modeling-the-effect-of-the-tag-variant-b-on-disease-risk" class="section level4">
+<h4>Modeling the effect of the tag variant (B) on disease risk</h4>
+<p>In our model, the tag variant (B) itself has no inrinsic effect on disease risk. Its effect size is solely due to its correlation with the causal variant (A). Thus, the risk for any haplotype carrying the reference allele at locus B depends on which allele is present at locus A. So, to derive the expected effect size at the tag variant, we need to marginalize over the allele at the causal variant.</p>
+<p>The penetrance of the reference allele at the tag variant can be written as:</p>
 <p><span class="math display">\[\begin{aligned}
 &amp; P(Y = 1|B = 0) = \frac{P(Y = 1,B = 0)}{P(B = 0)}
 \end{aligned}\]</span></p>
-<p>B’s effect depends on the effect of A so we need to marginalize over A.</p>
+<p>To calculate this, marginalize over the allele at the causal variant.</p>
 <p><span class="math display">\[\begin{aligned}
 &amp; P(Y = 1, B = 0) \\
 = &amp; P(Y = 1, B=0|A = 0)P(A = 0) +\\
@@ -140,7 +142,7 @@ P(Y = 1|B = 0) &amp; = (1 - f_B) \frac{a_0(1-q_0) + a_1q_0}{1-f_B} \\
 = &amp; \frac{a_0(1 - q_1)f_B + a_1q_1f_B}{f_B} \\
 = &amp;a_0(1 - q_1) +a_1q_1
 \end{aligned}\]</span></p>
-<p>The effect size of B (<span class="math inline">\(\beta_B\)</span>) is:</p>
+<p>The effect size of B (<span class="math inline">\(\beta_B\)</span>) is (similar to how we calculated the effect size of A):</p>
 <p><span class="math display">\[\begin{aligned}
 &amp; P(Y = 1|B = 1) - P(Y = 1|B = 1) \\
 = &amp; b_1 - b_0 \\
@@ -150,6 +152,21 @@ P(Y = 1|B = 0) &amp; = (1 - f_B) \frac{a_0(1-q_0) + a_1q_0}{1-f_B} \\
 = &amp; (q_1 - q_0)(a_1 - a_0) \\
 = &amp; (q_1 - q_0)\beta_A
 \end{aligned}\]</span></p>
-<p>We know from earlier that <span class="math inline">\(q_1 - q_0 = r\)</span> so <span class="math inline">\(\beta_B = r\beta_A\)</span>.</p>
-<p>I was going to the standard error and power of the variant in this post as well but it’s gotten a bit long so I may do that in the next post.</p>
+<p>We know from earlier that:</p>
+<p><span class="math display">\[r = (q_1 - q_0)\frac{\sqrt{f_B(1-f_B)}}{\sqrt{f_A(1-f_A)}}\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[q_1 - q_0 = r \frac{\sqrt{f_A(1-f_A)}}{\sqrt{f_B(1-f_B)}}\]</span></p>
+<p>And:</p>
+<p><span class="math display">\[\beta_B = \beta_A r\frac{\sqrt{f_A(1-f_A)}}{\sqrt{f_B(1-f_B)}}\]</span></p>
+<p>In practice, the genotypes are normalized to unit variance so <span class="math inline">\(f_B(1-f_B) = f_A(1-f_A)\)</span>. If that’s the case, <span class="math inline">\(\beta_B\)</span> further simplifies to:</p>
+<p><span class="math display">\[\beta_B = r\beta_A\]</span></p>
+<p>Done! Although, note that this simplified relationship assumes that genotypes for all SNPs are normalized to the same variance.</p>
+<p>I was going to add further derivations here for the standard error of the effect size and power of the test as a function of <span class="math inline">\(r\)</span> but realize it’s already a bit long and leave these for a future post.</p>
+<p>Cheers! :)</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>adapted from <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/gepi.20576">Vukcevic et al. 2012</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
