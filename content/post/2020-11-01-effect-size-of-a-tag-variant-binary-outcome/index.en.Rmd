@@ -2,7 +2,7 @@
 title: Effect size of a tag variant (binary outcome)
 author: ''
 date: '2020-11-01'
-draft: true
+draft: false
 slug: effect-size-of-a-tag-variant-binary-outcome
 categories: [derivation]
 tags:
@@ -212,7 +212,7 @@ $$\beta_B = r\beta_A$$
 
 Done! Although, note that this simplified relationship assumes that genotypes for all SNPs are normalized to the same variance.
 
-I was going to add further derivations here for the standard error  of the effect size and power of the test as a function of $r$ but realize it's already a bit long and leave these for a future post. 
+I was going to add further derivations here for the standard error of the effect size and power of the test as a function of $r$ but realize it's already a bit long and leave these for a future post. 
 
 Cheers! :)
 
