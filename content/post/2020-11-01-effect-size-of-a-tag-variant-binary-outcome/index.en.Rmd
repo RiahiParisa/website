@@ -85,9 +85,9 @@ $B$ and $Y$ are independent (conditional on $A$). In other words, conditioning o
 $$\begin{aligned}
 & P(Y = 1, B = 0) \\
 = & P(Y = 1,B = 0|A = 0)P(A = 0) + \\
-= & P(Y = 1, B = 0|A = 1)P(A = 1) \\
+ & P(Y = 1, B = 0|A = 1)P(A = 1) \\
 = & P(Y = 1|A = 0)P(B = 0|A = 0)P(A = 0) + \\
-= & P(Y = 1|A = 1)P(B = 0|A = 1)P(A = 1) \\
+ & P(Y = 1|A = 1)P(B = 0|A = 1)P(A = 1) \\
 = & \alpha_0 P(B = 0, A = 0) + \\
 = & \alpha_1 P(B = 0, A = 1) \\
 = & \alpha_0 f_{ab} + \alpha_1 f_{Ab}
@@ -106,9 +106,9 @@ We can do the same thing for $P(Y = 1|B = 1)$:
 $$\begin{aligned}
 & P(Y = 1, B = 1) \\
 = & P(Y = 1,B = 1|A = 0)P(A = 0) + \\
-= & P(Y = 1, B = 1|A = 1)P(A = 1) \\
+ & P(Y = 1, B = 1|A = 1)P(A = 1) \\
 = & P(Y = 1|A = 0)P(B = 1|A = 0)P(A = 0) + \\
-= & P(Y = 1|A = 1)P(B = 1|A = 1)P(A = 1) \\
+ & P(Y = 1|A = 1)P(B = 1|A = 1)P(A = 1) \\
 = & \alpha_0 P(B = 1, A = 0) + \\
 = & \alpha_1 P(B = 1, A = 1) \\
 = & \alpha_0 f_{aB} + \alpha_1 f_{AB}
