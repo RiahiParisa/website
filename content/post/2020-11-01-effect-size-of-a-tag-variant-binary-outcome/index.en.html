@@ -81,7 +81,6 @@ P(Y = 1|B = 0) = \gamma_0,~~ and ~~P(Y = 1|B = 1) = \gamma_1
 <p>where <span class="math inline">\(f_{ab}\)</span> and <span class="math inline">\(f_{Ab}\)</span> are haplotype frequencies. Then,</p>
 <p><span class="math display">\[\begin{aligned}
 &amp; P(Y = 1|B = 0) \\
-= &amp; P(Y = 1, B = 0) \\
 = &amp; \frac{P(Y = 1, B = 0)}{P(B = 0)} \\
 = &amp; \frac{\alpha_0 f_{ab} + \alpha_1 f_{Ab}}{1 - f_B}
 \end{aligned}\]</span></p>
@@ -99,7 +98,6 @@ P(Y = 1|B = 0) = \gamma_0,~~ and ~~P(Y = 1|B = 1) = \gamma_1
 <p>and</p>
 <p><span class="math display">\[\begin{aligned}
 &amp; P(Y = 1|B = 1) \\
-= &amp; P(Y = 1, B = 1) \\
 = &amp; \frac{P(Y = 1, B = 1)}{P(B = 1)} \\
 = &amp; \frac{\alpha_0 f_{aB} + \alpha_1 f_{AB}}{f_B}
 \end{aligned}\]</span></p>
@@ -123,7 +121,7 @@ f_{ab} = &amp; P(A = 0,B = 0) \\
 \\
 f_{aB} = &amp; P(A = 0,B = 1) \\
 = &amp; P(A = 0|B = 1)P(B = 1) \\
-= &amp; (1 - q_1)(f_B) \\
+= &amp; (1 - q_1)f_B \\
 \\
 \end{aligned}\]</span></p>
 <p>Plugging these into <span class="math inline">\(P(Y = 1| B = 0)\)</span> and <span class="math inline">\(P(Y = 1|B = 1)\)</span>:</p>
@@ -173,10 +171,12 @@ r &amp; = \frac{f_B(1 - f_B)(q_1 - q_0)}{\sqrt{f_B(1-f_B)}\sqrt{f_A(1 - f_A)}} \
 <p><span class="math display">\[\beta_{tag} = r\beta_{causal}\]</span></p>
 <p>Done! Although, note that this last simplification assumes that genotypes for all SNPs are normalized to the same variance.</p>
 <p>This post has already gotten quite long so I’m going to leave it here but here are some extensions that you can try to work out:</p>
-<p>– derivations for the log-risk and log-odds (logistic regression) model
-– extend this result to diploid individuals
-– derive the standard error and power of the test
-– derivations for a continuous trait</p>
+<ul>
+<li>derivations for the log-risk and log-odds (logistic regression) model</li>
+<li>extend this result to diploid individuals</li>
+<li>derive the standard error and power of the test</li>
+<li>derivations for a continuous trait</li>
+</ul>
 <p>I might update this post later with some of these (1 and 2) and write a separate post for continuous traits.</p>
 <p>Cheers! :)</p>
 </div>
