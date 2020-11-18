@@ -2,7 +2,7 @@
 title: Effect size of a tag variant (binary outcome)
 author: ''
 date: '2020-11-01'
-draft: false
+draft: true
 slug: effect-size-of-a-tag-variant-binary-outcome
 categories: [derivation]
 tags:
@@ -23,80 +23,165 @@ projects: []
 
 #### Motivation
 
-Recently, I've been studying the effect of population stratification on GWAS effect size estimates. For this purpose, I needed to work out the effect size of a tag SNP as a function of its LD with the causal variant. I've always taken for granted that this is equal to $r\beta_{causal}$, where $r$ is the LD between the two variants and $\beta_{causal}$ is the causal effect size. This makes intuitive sense qualitatively because we expect tag SNPs that are further away from causal variants to have smaller effect sizes (and vice versa). But I couldn't intuit why this exact relationship. There are some derivations for this in the early GWAS literature (e.g. see [^1]) but none that were very explicit so I decided to work it out and post in case others find it helpful. 
+Ever wondered why the effect size of a tag variant is $r\beta_{causal}$? Here, $r$ is the correlation (measure of LD) between the tag and causal variant, and $\beta_{causal}$ is the effect size of the causal variant. This makes intuitive sense qualitatively because we expect tag SNPs that are further away from causal variants to have smaller effect sizes (and vice versa). But I didn't know where this exact relationship came from so I decided to work it out [^1]. Posting the derivation here in detail and with explicit probability statements in case others find it helpful.
 
-Side warning: I would not recommend reading this on a smaller screen (e.g. phone) as the math might not render fully. 
+Side warning: I would not recommend reading this on a smaller screen (e.g. phone) as the math might not render fully.
 
 #### Modeling the effect of causal variant on disease risk
 
-Suppose there are two biallelic loci, A and B, where A is the causal locus (alleles at this locus have a causal effect on the phenotype) and B is a biallelic SNP in LD with A. 
+Suppose there's a biallelic disease locus (let's call it $L_{causal}$) with alleles A and a, where A is the risk allele. Further suppose that each individual in the population is haploid and that their genotype at the causal locus is denoted by $A$ which is 1 if they carry the risk allele and 0 otherwise.
 
-Let:
-
-* $Y \in \{0,1\}$ indicate disease status, where 0 indicates being healthy and 1 indicates having the disease.
-
-* $A \in \{0,1\}$ indicate whether or not a haplotype carries the non-reference (risk) allele at the causal variant A. Note that the terms 'reference' and 'non-reference' are arbitrary and are introduced only to clarify which alleles I am talking about.
-
-We can model the effect of the causal variant on disease risk using a logistic regression model:
-
-$$log \left( \frac{\pi}{1-\pi} \right) =\mu + \beta_A G + e$$
-
-where the left hand side is the log odds of developing the disease, $G$ represents the number of risk alleles, $\beta_A$ represents the effect size, and $e$ is some random error.
-
-We can measure the effect of the risk allele in terms of its penetrances, i.e., the probability that an individual develops the disease given that they carry the allele. 
-
-Let the penetrance of the alleles at the causal locus be:
+So, if we use $Y \in \{0,1\}$ to indicate disease status, where 0 indicates being healthy and 1 indicates having the disease, we can express the risk of each allele in terms as:
 
 $$\begin{aligned}
-P(Y = 1|A = 0) = a_0,~~ and ~~P(Y = 1|A = 1) = a_1
-\end{aligned}$$ 
+P(Y = 1|A = 0) = \alpha_0,~~ and ~~P(Y = 1|A = 1) = \alpha_1
+\end{aligned}$$
 
-Note, that $a_0 = \mu + e$ and $a_1 = \mu + \beta_A + e$. Then, assuming an additive model (i.e. no dominance; additional risk alleles increase the risk by the same amount), we can get the effect size $\beta_A$ by subtraction:
+One way to model the effect size of the disease locus is with a log risk regression model [^3]:
+
+$$\pi =\mu_A + \beta_AA$$
+
+where the left hand side is the probability of developing the disease, $\mu_A$ is the baseline prevalence (or the probability of disease in individuals not carrying the risk allele), and $\beta_A$ represents the effect size.
+
+Note, for disease risk, we typically use a log risk regression model (i.e. where the response is modeled as $log \left( \pi \right)$) or a logistic regression model (i.e. where the response is modeled as log odds or $log \left( \frac{\pi}{1 - \pi} \right)$. I'm sticking to $\pi$ here because the result we're after is easier to derive though the conclusions are similar for the other two models.
+
+Because $a_0 = \mu_A$ and $a_1 = \mu_A + \beta_A$, the effect size $\beta_A$ can be obtained by subtraction:
 
 $$\begin{aligned}
 & P(Y = 1|A = 1) - P(Y = 1|A = 0) \\
 = & a_1 - a_0 \\
-= &  \mu + \beta_A + e - \mu -e \\
+= &  \mu_A + \beta_A - \mu_A \\
 = & \beta_A
 \end{aligned}$$
 
-Similarly, we can write down the effect size of the marker locus. Let the penetrances be $P(Y = 1|B = 0) = b_0$ and $P(Y = 1|B = 1) = b_1$. Then the effect size is:
+Our goal is to answer the question: How does the effect size of a tag SNP vary as a function of the LD with the causal variant? 
 
-$$\beta_B = b_0 - b_1$$
+#### Modeling the effect of the tag SNP on disease risk
 
-Our goal is to answer the question: what is the relationship between the effect of a tag SNP and the effect of a causal variant given the LD between them? To do so, let's first write down the LD between the two variants.
+In our model, the tag SNP (with alleles B and b) itself has no intrinsic effect on disease risk. The risk of individuals carrying the B allele depends on how often it co-occurs with the risk allele at the causal locus (i.e. its correlation with alleles at the causal locus). So, to derive the marginal effect size at the tag SNP, we need to average over the allele at the causal variant. To do this, let's first define the genotype at the tag locus as $B$ which is 1 if individuals carry the B allele and 0 if they carry the b allele. The risk of each allele at the tag SNP can be expressed as:
 
-#### Modeling the LD between locus A and B
+$$\begin{aligned}
+P(Y = 1|B = 0) = \gamma_0,~~ and ~~P(Y = 1|B = 1) = \gamma_1
+\end{aligned}$$
 
-We can represent the LD as the correlation between the two loci:
+Then, the effect size at the tag SNP ($\beta_{tag}$) is $\gamma_1 - \gamma_0$ similar to how we derived it for the causal locus.
 
-$$r = \frac{ f_{AB} - f_A f_B }{\sqrt{f_A (1-f_A) f_B (1-f_B)}}$$
+Let's first work out the risk carried by the b allele:
 
-where $f_A = P(A = 1)$ and $f_B = P(B = 1)$ are the allele frequencies at locus A and B, respectively, and $f_{AB}$ is the frequency of the haplotype carrying non-reference alleles at both loci (i.e. $f_{AB} = P(A = 1,B = 1)$). We need to further simplify $f_{AB}$ in terms of the conditional probability of observing the risk allele at locus A given that we know the allele at B.
+$$\begin{aligned}
+& P(Y = 1|B = 0) = \frac{P(Y = 1,B = 0)}{P(B = 0)}
+\end{aligned}$$
 
-Let $P(A = 1|B = 0) = q_0$ and $P(A = 1|B = 1) = q_1$
+To calculate the numerator, we marginalize over the alleles at the causal variant.
 
-Then, the frequency of the $f_{AB}$ haplotype is: 
+$$\begin{aligned}
+& P(Y = 1, B = 0) \\
+= & P(Y = 1, B = 0|A = 0)P(A = 0) +\\
+= & P(Y = 1, B = 0|A = 1)P(A = 1)
+\end{aligned}$$
+
+$B$ and $Y$ are independent (conditional on $A$). In other words, conditioning on the allele at the causal locus, your probability of developing the disease does not depend on which allele you carry at the tag SNP. For example, the disease risk of individuals carrying the risk (A) allele at the causal locus is $\alpha_1$, regardless of whether they have the B or the b allele at the tag SNP. Therefore, $P(Y = 1, B = 0|A = 0) = P(Y = 1|A = 0)P(B = 0|A = 0)$, and so
+
+$$\begin{aligned}
+& P(Y = 1, B = 0) \\
+= & P(Y = 1,B = 0|A = 0)P(A = 0) + \\
+= & P(Y = 1, B = 0|A = 1)P(A = 1) \\
+= & P(Y = 1|A = 0)P(B = 0|A = 0)P(A = 0) + \\
+= & P(Y = 1|A = 1)P(B = 0|A = 1)P(A = 1) \\
+= & \alpha_0 P(B = 0, A = 0) + \\
+= & \alpha_1 P(B = 0, A = 1) \\
+= & \alpha_0 f_{ab} + \alpha_1 f_{Ab}
+\end{aligned}$$
+
+where $f_{ab}$ and $f_{Ab}$ are haplotype frequencies. Then, 
+
+$$\begin{aligned}
+& P(Y = 1|B = 0) \\
+= & P(Y = 1, B = 0) \\
+= & \frac{P(Y = 1, B = 0)}{P(B = 0)} \\
+= & \frac{\alpha_0 f_{ab} + \alpha_1 f_{Ab}}{1 - f_B}
+\end{aligned}$$
+
+We can do the same thing for $P(Y = 1|B = 1)$:
+
+$$\begin{aligned}
+& P(Y = 1, B = 1) \\
+= & P(Y = 1,B = 1|A = 0)P(A = 0) + \\
+= & P(Y = 1, B = 1|A = 1)P(A = 1) \\
+= & P(Y = 1|A = 0)P(B = 1|A = 0)P(A = 0) + \\
+= & P(Y = 1|A = 1)P(B = 1|A = 1)P(A = 1) \\
+= & \alpha_0 P(B = 1, A = 0) + \\
+= & \alpha_1 P(B = 1, A = 1) \\
+= & \alpha_0 f_{aB} + \alpha_1 f_{AB}
+\end{aligned}$$
+
+and 
+
+$$\begin{aligned}
+& P(Y = 1|B = 1) \\
+= & P(Y = 1, B = 1) \\
+= & \frac{P(Y = 1, B = 1)}{P(B = 1)} \\
+= & \frac{\alpha_0 f_{aB} + \alpha_1 f_{AB}}{f_B}
+\end{aligned}$$
+
+This is quite unsatisfying in that the haplotype frequencies are arbitrary. We need to simplify them further. Let's define:
+
+$$\begin{aligned}
+P(A = 1|B = 0) = q_0,~~ and ~~P(A = 1|B = 1) = q_1
+\end{aligned}$$
+
+We can express the haplotype frequencies in terms of these conditional probabilities.
 
 $$\begin{aligned}
 f_{AB} = & P(A = 1,B = 1) \\
 = & P(A = 1|B = 1)P(B = 1) \\
-= & q_1 f_B
-\end{aligned}$$
-
-We can similarly express the frequency of other haplotypes. For example: 
-
-$$\begin{aligned}
+= & q_1 f_B \\
+\\
 f_{Ab} = & P(A = 1,B = 0) \\
 = & P(A = 1|B = 0)P(B = 0) \\
-= & q_0 (1 - f_B)
+= & q_0 (1 - f_B) \\
+\\
+f_{ab} = & P(A = 0,B = 0) \\
+= & P(A = 0|B = 0)P(B = 0) \\
+= & (1 - q_0)(1 - f_B) \\
+\\
+f_{aB} = & P(A = 0,B = 1) \\
+= & P(A = 0|B = 1)P(B = 1) \\
+= & (1 - q_1)(f_B) \\
+\\
 \end{aligned}$$
 
-Substituting $f_{AB}$ in the numerator of $r$, we get:
+Plugging these into $P(Y = 1| B = 0)$ and $P(Y = 1|B = 1)$:
 
-$$f_{AB} - f_A f_B = q_1 f_B - f_A f_B$$
+$$\begin{aligned}
+& P(Y = 1|B = 0) = \gamma_0 \\
+= & \frac{\alpha_0 f_{ab} + \alpha_1 f_{Ab}}{1 - f_B} \\
+= & \frac{\alpha_0 (1 - q_0)(1 - f_B) + \alpha_1 q_0 (1 - f_B) }{1 - f_B} \\
+= & \alpha_0 (1 - q_0) + \alpha_1 q_0 \\
+\\
+\\
+& P(Y = 1|B = 1) = \gamma_1 \\
+= & \frac{\alpha_0 f_{aB} + \alpha_1 f_{AB}}{f_B} \\
+= & \frac{\alpha_0 (1 - q_1)f_B + \alpha_1 q_1f_B }{f_B} \\
+= & \alpha_0 (1 - q_1) + \alpha_1 q_1 \\
+\end{aligned}$$
 
-We can further simplify this by expressing $f_A$ in terms of $f_B$ by marginalization.
+
+The effect size of the tag SNP ($\beta_B$) is (similar to how we calculated the effect size of the causal variant):
+
+$$\begin{aligned}
+& P(Y = 1|B = 1) - P(Y = 1|B = 0) \\
+= & \gamma_1 -\gamma_0 \\
+= & \{ \alpha_0 (1 - q_1) + \alpha_1 q_1 \} - \{ \alpha_0 (1 - q_0) + \alpha_1 q_1 \} \\
+= & q_1(\alpha_1 - \alpha_0) - q_0(\alpha_1 - \alpha_0) \\
+= & (q_1 - q_0)\beta_A
+\end{aligned}$$
+
+
+Now, we need to express $q_1$ and $q_0$ in terms of the correlation between the two loci $r$.
+
+$$r = \frac{ f_{AB} - f_A f_B }{\sqrt{f_A (1-f_A) f_B (1-f_B)}}$$
+We know (from above) that $f_{AB} = q_1 f_B$, so we can write the numerator of $r$ as $f_{AB} - f_A f_B = q_1 f_B - f_A f_B$. We can further simplify this by writing $f_A$ in terms of $f_B$ by marginalization.
 
 $$\begin{aligned}
 & f_A = P(A = 1) \\
@@ -107,114 +192,44 @@ $$\begin{aligned}
 Then, 
 
 $$\begin{aligned}
-f_{AB} - f_A f_B & = f_Bq_1 - f_B \{q_1f_B + q_0(1 - f_B)\} \\
+f_{AB} - f_A f_B & = q_1f_B - f_B \{q_1f_B + q_0(1 - f_B)\} \\
 & = f_B(1 - f_B)(q_1 - q_0)
 \end{aligned}$$
 
 and $r$ becomes:
 
 $$\begin{aligned}
-r & = \frac{f_B(1 - f_B)(q_1 - q_0)}{\sqrt{f_B(1-f_B)}\sqrt{f_A(1-f_A)}} \\
-& = (q_1 - q_0)\frac{\sqrt{f_B(1-f_B)}}{\sqrt{f_A(1-f_A)}}
+r & = \frac{f_B(1 - f_B)(q_1 - q_0)}{\sqrt{f_B(1-f_B)}\sqrt{f_A(1 - f_A)}} \\
+& = (q_1 - q_0)\frac{\sqrt{f_B(1-f_B)}}{\sqrt{f_A(1 - f_A)}}
 \end{aligned}$$
 
 
-#### Modeling the effect of the tag variant (B) on disease risk
-
-In our model, the tag variant (B) itself has no inrinsic effect on disease risk. Its effect size is solely due to its correlation with the causal variant (A). Thus, the risk for any haplotype carrying the reference allele at locus B depends on which allele is present at locus A. So, to derive the expected effect size at the tag variant, we need to marginalize over the allele at the causal variant. 
-
-The penetrance of the reference allele at the tag variant can be written as: 
-
-$$\begin{aligned}
-& P(Y = 1|B = 0) = \frac{P(Y = 1,B = 0)}{P(B = 0)}
-\end{aligned}$$
-
-To calculate this, marginalize over the allele at the causal variant.
-
-$$\begin{aligned}
-& P(Y = 1, B = 0) \\
-= & P(Y = 1, B=0|A = 0)P(A = 0) +\\
-= & P(Y = 1, B=0|A = 1)P(A = 1)
-\end{aligned}$$
-
-The effect of B on $Y$ are independent (conditional on A). Thus,
-
-$$\begin{aligned}
-& P(Y = 1,B = 0|A = 0)P(A = 0) \\
-= & P(Y = 1|A = 0)P(B = 0|A = 0)P(A = 0) \\ 
-= & a_0 \frac{P(B = 0, A = 0)}{P(A = 0)}P(A = 0) \\
-= & a_0(1-q_0)(1-f_B)
-\end{aligned}$$
-
-Similarly,
-
-$$\begin{aligned}
-& P(Y = 1,B = 0|A = 1)P(A = 1) \\
-= & P(Y = 1|A = 1)P(B = 0|A = 1)P(A = 1) \\
-= & a_1 \frac{P(B = 0, A = 1)}{P(A = 1)}P(A = 1) \\
-= & a_1 q_0 (1-f_B)
-\end{aligned}$$
-
-Therefore, $P(Y = 1, B = 0)$ becomes:
-
-$$\begin{aligned}
-P(Y = 1,B = 0) & = a_0(1-q_0)(1-f_B) + a_1 q_0 (1-f_B)\\
-& = (1 - f_B) \{a_0(1-q_0) + a_1q_0 \}
-\end{aligned}$$
-
-And $P(Y = 1|B = 0)$ is: 
-
-$$\begin{aligned}
-P(Y = 1|B = 0) & = (1 - f_B) \frac{a_0(1-q_0) + a_1q_0}{1-f_B} \\
-= & a_0(1-q_0) + a_1q_0
-\end{aligned}$$
-
-We can do the same thing for $b_1 = P(Y = 1|B = 1)$:
-
-$$\begin{aligned}
-& P(Y = 1|B = 1) \\
-= & \frac{P(Y = 1, B = 1)}{P(B = 1)} \\
-= & P(Y = 1, B = 1|A = 0)P(A = 0) + \\
-& \frac{P(Y = 1, B = 1|A = 1)P(A = 1)}{P(B = 1)} \\
-= & P(Y = 1| A = 0)P(B = 1|A = 0)P(A = 0) + \\
- & \frac{P(Y = 1|A = 1)P(B = 1|A = 1)P(A = 1)}{P(B = 1)} \\
-= & \frac{a_0(1 - q_1)f_B + a_1q_1f_B}{f_B} \\
-= &a_0(1 - q_1) +a_1q_1
-\end{aligned}$$
-
-The effect size of B ($\beta_B$) is (similar to how we calculated the effect size of A):
-
-$$\begin{aligned}
-& P(Y = 1|B = 1) - P(Y = 1|B = 1) \\
-= & b_1 - b_0 \\
-= & a_0(1 - q_0) + a_1(1 - q_0) - \{a_0(1 - q_1) + a_1q_1\} \\
-= & a_0 - a_0q_0 + a_1q_0 - a_1q_1 - a_0 + a_0q_1 \\
-= & q_0(a_1 - a_0) + q_1(a_1 - a_0) \\
-= & (q_1 - q_0)(a_1 - a_0) \\
-= & (q_1 - q_0)\beta_A
-\end{aligned}$$
-
-We know from earlier that:
-
-$$r = (q_1 - q_0)\frac{\sqrt{f_B(1-f_B)}}{\sqrt{f_A(1-f_A)}}$$
-
-Then, 
+Therefore, $q_1 - q_0$ can be written as:
 
 $$q_1 - q_0 = r \frac{\sqrt{f_A(1-f_A)}}{\sqrt{f_B(1-f_B)}}$$
 
-And:
+Plugging this into $(q_1 - q_0) \beta_A$, we get:
 
 $$\beta_B = \beta_A r\frac{\sqrt{f_A(1-f_A)}}{\sqrt{f_B(1-f_B)}}$$
 
-In practice, the genotypes are normalized to unit variance so $f_B(1-f_B) = f_A(1-f_A)$. If that's the case, $\beta_B$ further simplifies to:
+In practice, genotypes are often normalized to unit variance, i.e., $2f_B(1-f_B) = 2f_A(1-f_A) = 1$. If that's the case, $\beta_B$ further simplifies to:
 
 $$\beta_B = r\beta_A$$
 
 Done! Although, note that this simplified relationship assumes that genotypes for all SNPs are normalized to the same variance.
 
-I was going to add further derivations here for the standard error of the effect size and power of the test as a function of $r$ but realize it's already a bit long and leave these for a future post. 
+This post has already gotten quite long so I'm going to leave it here but here are some extensions that you can try to work out:
+
+-- derivations for the log-risk and log-odds (logistic regression) model
+-- extend this result to diploid individuals
+-- derive the standard error and power of the test
+-- derivations for a continuous trait
+
+I might update this post later with some of these (1 and 2) and write a separate post for continuous traits.
 
 Cheers! :)
 
-[^1]: adapted from [Vukcevic et al. 2012](https://onlinelibrary.wiley.com/doi/full/10.1002/gepi.20576)
+[^1]: I found this paper which provides a similar result for the log risk model ([Vukcevic et al. 2012](https://onlinelibrary.wiley.com/doi/full/10.1002/gepi.20576)). I have incorporated some of their notation in my post because it was clearer. Definitely worth the read. 
+
+
 
