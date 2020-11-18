@@ -167,14 +167,14 @@ $$\begin{aligned}
 \end{aligned}$$
 
 
-The effect size of the tag SNP ($\beta_B$) is (similar to how we calculated the effect size of the causal variant):
+The effect size of the tag SNP ($\beta_{tag}$) is (similar to how we calculated the effect size of the causal variant):
 
 $$\begin{aligned}
 & P(Y = 1|B = 1) - P(Y = 1|B = 0) \\
 = & \gamma_1 -\gamma_0 \\
 = & \{ \alpha_0 (1 - q_1) + \alpha_1 q_1 \} - \{ \alpha_0 (1 - q_0) + \alpha_1 q_1 \} \\
 = & q_1(\alpha_1 - \alpha_0) - q_0(\alpha_1 - \alpha_0) \\
-= & (q_1 - q_0)\beta_A
+= & (q_1 - q_0)\beta_{causal}
 \end{aligned}$$
 
 It's already starting to shape up! Can we express $q_1$ and $q_0$ in terms of the correlation between the two loci $r$?
