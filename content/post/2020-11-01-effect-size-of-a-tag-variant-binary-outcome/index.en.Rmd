@@ -77,7 +77,7 @@ To calculate the numerator, we marginalize over the alleles at the causal varian
 $$\begin{aligned}
 & P(Y = 1, B = 0) \\
 = & P(Y = 1, B = 0|A = 0)P(A = 0) +\\
-= & P(Y = 1, B = 0|A = 1)P(A = 1)
+ & P(Y = 1, B = 0|A = 1)P(A = 1)
 \end{aligned}$$
 
 $B$ and $Y$ are independent (conditional on $A$). In other words, conditioning on the allele at the causal locus, your probability of developing the disease does not depend on which allele you carry at the tag SNP. For example, the disease risk of individuals carrying the risk (A) allele at the causal locus is $\alpha_1$, regardless of whether they have the B or the b allele at the tag SNP. Therefore, $P(Y = 1, B = 0|A = 0) = P(Y = 1|A = 0)P(B = 0|A = 0)$, and so
