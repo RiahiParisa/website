@@ -2,7 +2,7 @@
 title: What your genetic ancestry test can and cannot tell you about your genealogical
   ancestors
 author: Arslan Zaidi
-draft: true
+draft: false
 date: '2018-10-17'
 slug: what-your-genetic-ancestry-test-can-and-cannot-tell-you-about-your-genealogical-ancestors
 categories:
