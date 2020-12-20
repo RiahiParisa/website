@@ -3,7 +3,7 @@ title: Effect size of a tag variant (binary outcome)
 author: ''
 date: '2020-11-01'
 draft: false
-slug: effect-size-of-a-tag-variant-binary-outcome
+slug: effect-size-of-a-tag-variant
 categories: [derivation]
 tags:
   - effect size
@@ -27,7 +27,7 @@ Ever wondered why the effect size of a tag variant is $r\beta_{causal}$? Here, $
 
 Side warning: I would not recommend reading this on a smaller screen (e.g. phone) as the math might not render fully.
 
-#### Modeling the effect of causal variant on disease risk
+#### Modeling the effect of causal variant (binary phenotype)
 
 Suppose there's a biallelic disease locus with alleles A and a, where A is the risk allele. Further suppose that each individual in the population is haploid and that their genotype at the causal locus is denoted by $A$ which is 1 if they carry the risk allele and 0 otherwise. Haploidy makes the derivation easier to follow but the result can easily be extended to dploid genotypes as well.
 
@@ -56,7 +56,7 @@ $$\begin{aligned}
 
 Our goal is to answer the question: How does the effect size of a tag SNP vary as a function of the LD with the causal variant? 
 
-#### Modeling the effect of the tag SNP on disease risk
+#### Modeling the effect of the tag SNP (binary phenotype)
 
 Let's assume that the tag SNP (with alleles B and b) itself has no intrinsic effect on disease risk. Thus, the risk of individuals carrying the B allele depends on how often it co-occurs with the risk allele at the causal locus (i.e. its correlation with alleles at the causal locus). So, to derive the marginal effect size at the tag SNP, we need to average over the allele at the causal variant. To do this, let's first define the genotype at the tag locus as $B$, which is 1 if individuals carry the B allele and 0 if they carry the b allele. The risk of carrying these alleles can be expressed as:
 
@@ -215,14 +215,84 @@ $$\beta_{tag} = r\beta_{causal}$$
 
 Done! Although, note that this last simplification assumes that genotypes for all SNPs are normalized to the same variance.
 
+#### Effect of tag SNP (quantitative phenotype)
+
+The derivation for quantitative phenotype is very similar and in some ways simpler because we can use a simple linear model instead of worrying about log models. The derivation for the quantitative phenotype is different mostly in notation. Instead of looking at the probability of disease as a function of which allele an individual carries, we're going to look at the expected phenotype. We assume the following linear model: 
+
+$$Y = \mu + \beta_{causal}A + \epsilon$$
+where $Y$ is a continuous phenotype and $\epsilon$ is some random error. Then the expected phenotypes are:
+
+$$E(Y|A = 0) = \alpha_0 = \mu ~~~ \& ~~~E(Y|A = 1) = \alpha_1 = \mu + \beta_{causal}$$
+
+And the effect of the causal variant is (similar to the binary phenotype):
+
+$$ \beta_{causal} = E(Y|A = 1) - E(Y|A = 0) $$
+
+Similary, if we denote $E(Y|B = 0) = \gamma_0$ and $E(Y|B = 1) = \gamma_1$ the effect size of the tag SNP is:
+
+$$ \beta_{tag} = E(Y|B = 1) - E(Y|B = 0)$$
+
+$E(Y|B = 0)$ can be calculated using:
+
+$$E(Y|B = 0) = \int_{y} y. f_{Y|B = 0} (y|B = 0) dy$$
+where $f_{Y|B = 0}(y|B = 0)$ is the probability distribution function (pdf) of $y$ conditional on the b allele. This is the same as calculating the mean of $Y$ across all individuals carrying the b allele. The pdf is necessary because $Y$ is a continuous variable.
+
+$$f_{Y|B = 0}(y|B = 0) = \frac{ f_{Y, B = 0}(y, B = 0) }{f_{B = 0}(B = 0)}$$
+where $f_{Y,B = 0}$ is the joint distribution and $f_{B = 0} = P(B = 0)$ is the probability mass function (pmf). This is similar to the definition of conditional probability presented in the case of the binary phenotype. Similar to calculating $P(Y = 1,B = 0)$ (e.g.) in the binary case, we will sum over the allele present at the causal locus (bear with me):
+
+$$\begin{aligned}
+f_{Y,B = 0}(y,B = 0) = & \sum_{a} f_{Y,B = 0|A = a}P(A = a) \\
+ = & f_{Y,B = 0 | A = 0}(y,B = 0 | A = 0)P(A = 0) + \\
+& f_{Y,B = 0 | A = 1}(y,B = 0 | A = 1)P(A = 1) \\
+= & f_{Y|A = 0}(Y|A = 0)f_{B = 0|A = 0}(B = 0|A = 0)P(A = 0) + \\
+ & f_{Y|A = 1}(Y|A = 1)f_{B = 0|A = 1}(B = 0|A = 1)P(A = 1) \\
+= & f_{Y|A = 0}(Y|A = 0)P(B = 0|A = 0)P(A = 0) +\\
+ & f_{Y|A = 1}(Y|A = 1)P(B = 0|A = 1)P(A = 1)
+\end{aligned}$$
+
+The second last line is possible again because $Y$ is independent of B, conditional on A. From this we can get the conditional distribution:
+
+$$\begin{aligned}
+f_{Y|B = 0}(y|B = 0) = & f_{Y|A = 0}(Y|A = 0)P(B = 0|A = 0)P(A = 0) +\\
+ & \frac{f_{Y|A = 1}(Y|A = 1)P(B = 0|A = 1)P(A = 1)}{P(B = 0)}
+\end{aligned}$$
+And $E(Y|B = 0)$ becomes:
+
+$$\begin{aligned}
+E(Y|B = 0) = & \int_{y} yf_{Y|B = 0} (y|B = 0) dy \\
+ = & \int_{y} y .f_{Y|A = 0}(Y|A = 0)P(B = 0|A = 0)P(A = 0)dy ~~ +\\
+ & \frac{\int_{y} y .f_{Y|A = 1}(Y|A = 1)P(B = 0|A = 1)P(A = 1)dy}{P(B = 0)} \\
+ = & P(B = 0|A = 0)P(A = 0) \int_{y} y f_{Y|A = 0}(Y|A = 0)dy ~~ + \\
+ & \frac{P(B = 0|A = 1)P(A = 1) \int_{y} y f_{Y|A = 1}(Y|A = 1)dy}{P(B = 0)} \\
+ = & P(B = 0|A = 0)P(A = 0)E(Y|A = 0) + \\
+  & \frac{P(B = 0|A = 1)P(A = 1)E(Y|A = 1)}{P(B = 0)}
+\end{aligned}$$
+
+We derived most of these terms in the binary case, which simplifies the above equation to:
+
+$$\begin{aligned}
+E(Y|B = 0) = & \frac{\alpha_0 f_{ab} + \alpha_1 f_{Ab}}{f_B} \\
+= & \alpha_0(1 - q_0) + \alpha_1 q_0
+\end{aligned}$$
+
+Similarly (and I'll let you work this out yourself), $E(Y|B = 1) = \alpha_0 (1 - q_1) + \alpha_1 q_1$. Then, the effect size of the tag SNP becomes:
+
+$$\begin{aligned}
+\beta_{tag} = & E(Y|B = 1) - E(Y|B = 0) \\
+= & \{ \alpha_0 (1 - q_1) + \alpha_1 q_1 \} - \{ \alpha_0(1 - q_0) + \alpha_1q_0 \} \\
+= & (q_1 - q_0)\beta_{causal} \\
+= & r\beta_{causal}\frac{\sqrt{f_A(1-f_A)}}{\sqrt{f_B(1-f_B)}}
+\end{aligned}$$
+
+I skipped over the last few steps as we already worked them out for the binary phenotype. So there you have it!
+
 This post has already gotten quite long so I'm going to leave it here but here are some extensions that you can try to work out:
 
 * derivations for the log-risk and log-odds (logistic regression) model
 * extend this result to diploid individuals
 * derive the standard error and power of the test
-* derivations for a continuous trait
 
-I might update this post later with some of these (1 and 2) and write a separate post for continuous traits.
+I might update this post later with some of these (1 and 2). 
 
 Cheers! :)
 
