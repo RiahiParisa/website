@@ -49,9 +49,9 @@ Because $\alpha_0 = \mu_A$ and $\alpha_1 = \mu_A + \beta_{causal}$, the effect s
 
 $$\begin{aligned}
 & P(Y = 1|A = 1) - P(Y = 1|A = 0) \\
-= & \alpha_1 - \alpha_0 \\
-= &  \mu_A + \beta_{causal} - \mu_A \\
-= & \beta_{causal}
+& = \alpha_1 - \alpha_0 \\
+& =  \mu_A + \beta_{causal} - \mu_A \\
+& = \beta_{causal}
 \end{aligned}$$
 
 Our goal is to answer the question: How does the effect size of a tag SNP vary as a function of the LD with the causal variant? 
@@ -75,16 +75,14 @@ $$\begin{aligned}
 To calculate the numerator, we marginalize over the alleles at the causal variant.
 
 $$\begin{aligned}
-& P(Y = 1, B = 0) \\
-= & P(Y = 1, B = 0|A = 0)P(A = 0) +\\
+P(Y = 1, B = 0) = & P(Y = 1, B = 0|A = 0)P(A = 0) +\\
  & P(Y = 1, B = 0|A = 1)P(A = 1)
 \end{aligned}$$
 
 $B$ and $Y$ are independent (conditional on $A$). In other words, conditioning on the allele at the causal locus, your probability of developing the disease does not depend on which allele you carry at the tag SNP. For example, the disease risk of individuals carrying the risk (A) allele at the causal locus is $\alpha_1$, regardless of whether they have the B or the b allele at the tag SNP. Therefore, $P(Y = 1, B = 0|A = 0) = P(Y = 1|A = 0)P(B = 0|A = 0)$, and so
 
 $$\begin{aligned}
-& P(Y = 1, B = 0) \\
-= & P(Y = 1,B = 0|A = 0)P(A = 0) + \\
+P(Y = 1, B = 0) = & P(Y = 1,B = 0|A = 0)P(A = 0) + \\
  & P(Y = 1, B = 0|A = 1)P(A = 1) \\
 = & P(Y = 1|A = 0)P(B = 0|A = 0)P(A = 0) + \\
  & P(Y = 1|A = 1)P(B = 0|A = 1)P(A = 1) \\
@@ -96,16 +94,14 @@ $$\begin{aligned}
 where $f_{ab}$ and $f_{Ab}$ are haplotype frequencies. Then, 
 
 $$\begin{aligned}
-& P(Y = 1|B = 0) \\
-= & \frac{P(Y = 1, B = 0)}{P(B = 0)} \\
-= & \frac{\alpha_0 f_{ab} + \alpha_1 f_{Ab}}{1 - f_B}
+P(Y = 1|B = 0) = \frac{P(Y = 1, B = 0)}{P(B = 0)} \\
+= \frac{\alpha_0 f_{ab} + \alpha_1 f_{Ab}}{1 - f_B}
 \end{aligned}$$
 
 We can do the same thing for $P(Y = 1|B = 1)$:
 
 $$\begin{aligned}
-& P(Y = 1, B = 1) \\
-= & P(Y = 1,B = 1|A = 0)P(A = 0) + \\
+P(Y = 1, B = 1) = & P(Y = 1,B = 1|A = 0)P(A = 0) + \\
  & P(Y = 1, B = 1|A = 1)P(A = 1) \\
 = & P(Y = 1|A = 0)P(B = 1|A = 0)P(A = 0) + \\
  & P(Y = 1|A = 1)P(B = 1|A = 1)P(A = 1) \\
@@ -117,8 +113,7 @@ $$\begin{aligned}
 and 
 
 $$\begin{aligned}
-& P(Y = 1|B = 1) \\
-= & \frac{P(Y = 1, B = 1)}{P(B = 1)} \\
+P(Y = 1|B = 1) = & \frac{P(Y = 1, B = 1)}{P(B = 1)} \\
 = & \frac{\alpha_0 f_{aB} + \alpha_1 f_{AB}}{f_B}
 \end{aligned}$$
 
@@ -152,18 +147,17 @@ f_{aB} = & P(A = 0,B = 1) \\
 Plugging these into $P(Y = 1| B = 0)$ and $P(Y = 1|B = 1)$:
 
 $$\begin{aligned}
-& P(Y = 1|B = 0) = \gamma_0 \\
+P(Y = 1|B = 0) = \gamma_0 \\
 = & \frac{\alpha_0 f_{ab} + \alpha_1 f_{Ab}}{1 - f_B} \\
 = & \frac{\alpha_0 (1 - q_0)(1 - f_B) + \alpha_1 q_0 (1 - f_B) }{1 - f_B} \\
 = & \alpha_0 (1 - q_0) + \alpha_1 q_0 \\
 \\
 \\
-& P(Y = 1|B = 1) = \gamma_1 \\
+P(Y = 1|B = 1) = & \gamma_1 \\
 = & \frac{\alpha_0 f_{aB} + \alpha_1 f_{AB}}{f_B} \\
 = & \frac{\alpha_0 (1 - q_1)f_B + \alpha_1 q_1f_B }{f_B} \\
 = & \alpha_0 (1 - q_1) + \alpha_1 q_1 \\
 \end{aligned}$$
-
 
 The effect size of the tag SNP ($\beta_{tag}$) is (similar to how we calculated the effect size of the causal variant):
 
@@ -181,7 +175,7 @@ $$r = \frac{ f_{AB} - f_A f_B }{\sqrt{f_A (1-f_A) f_B (1-f_B)}}$$
 We know (from above) that $f_{AB} = q_1 f_B$, so we can write the numerator of $r$ as $f_{AB} - f_A f_B = q_1 f_B - f_A f_B$. We can further simplify this by writing $f_A$ in terms of $f_B$ by marginalization.
 
 $$\begin{aligned}
-& f_A = P(A = 1) \\
+f_A & = P(A = 1) \\
 & = P(A = 1,B = 1) + P(A = 1,B = 0) \\
 & = q_1f_B + q_0(1 - f_B)
 \end{aligned}$$
@@ -238,14 +232,14 @@ $$E(Y|B = 0) = \int_{y} y. f_{Y|B = 0} (y|B = 0) dy$$
 where $f_{Y|B = 0}(y|B = 0)$ is the probability distribution function (pdf) of $y$ conditional on the b allele. This is the same as calculating the mean of $Y$ across all individuals carrying the b allele. The pdf is necessary because $Y$ is a continuous variable.
 
 $$f_{Y|B = 0}(y|B = 0) = \frac{ f_{Y, B = 0}(y, B = 0) }{f_{B = 0}(B = 0)}$$
-where $f_{Y,B = 0}$ is the joint distribution and $f_{B = 0} = P(B = 0)$ is the probability mass function (pmf). This is similar to the definition of conditional probability presented in the case of the binary phenotype. Similar to calculating $P(Y = 1,B = 0)$ (e.g.) in the binary case, we will sum over the allele present at the causal locus (bear with me):
+where $f_{Y,B = 0}$ is the joint distribution and $f_{B = 0}(B = 0) = P(B = 0)$. This is similar to the definition of conditional probability presented in the case of the binary phenotype. Similar to calculating $P(Y = 1,B = 0)$ (e.g.) in the binary case, we will sum over the allele present at the causal locus (bear with me):
 
 $$\begin{aligned}
 f_{Y,B = 0}(y,B = 0) = & \sum_{a} f_{Y,B = 0|A = a}P(A = a) \\
  = & f_{Y,B = 0 | A = 0}(y,B = 0 | A = 0)P(A = 0) + \\
-& f_{Y,B = 0 | A = 1}(y,B = 0 | A = 1)P(A = 1) \\
+ & f_{Y,B = 0 | A = 1}(y,B = 0 | A = 1)P(A = 1) \\
 = & f_{Y|A = 0}(Y|A = 0)f_{B = 0|A = 0}(B = 0|A = 0)P(A = 0) + \\
- & f_{Y|A = 1}(Y|A = 1)f_{B = 0|A = 1}(B = 0|A = 1)P(A = 1) \\
+& f_{Y|A = 1}(Y|A = 1)f_{B = 0|A = 1}(B = 0|A = 1)P(A = 1) \\
 = & f_{Y|A = 0}(Y|A = 0)P(B = 0|A = 0)P(A = 0) +\\
  & f_{Y|A = 1}(Y|A = 1)P(B = 0|A = 1)P(A = 1)
 \end{aligned}$$
