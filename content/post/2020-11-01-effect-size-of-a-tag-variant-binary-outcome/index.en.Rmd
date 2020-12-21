@@ -1,5 +1,5 @@
 ---
-title: Effect size of a tag variant (binary outcome)
+title: Effect size of a tag variant
 author: ''
 date: '2020-11-01'
 draft: false
