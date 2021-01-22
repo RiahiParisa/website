@@ -1,0 +1,77 @@
+---
+title: Expected difference in genetic value between populations under neutrality
+author: admin
+date: '2021-01-19'
+draft: true
+slug: expected-difference-in-genetic-value-between-populations-under-neutrality
+categories:
+  - derivation
+tags:
+  - drift
+  - genetic drift
+  - quantitative genetics
+  - genetic value
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-01-19T21:38:56-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+## Expected value of the phenotype in a population
+
+Let $Y$ represent the phenotype of a randomly chosen individual from a randomly mating population. The expected value of $Y$ is $\mathbb{E}(Y) = 2 \beta F$ where $F$ is the frequency of the variant in the population and $\beta$ is its effect size. This can be derived using the law of total expectation:
+
+$$\begin{aligned}
+\mathbb{E}(Y) & = \mathbb{E} \{ \mathbb{E}(Y|X) \} \\
+& = \mathbb{E}(Y|X = 0)P(X = 0) + \mathbb{E}(Y|X = 1)P(X = 1) + \mathbb{E}(Y|X = 2)P(X = 2) \\
+& = 0(1-F)^2 + \beta2F(1-F) + 2\beta F^2 \\
+& = 2\beta F - 2\beta F^2 + 2\beta F^2 \\
+& = 2\beta F
+\end{aligned}$$
+
+Where $X$ is the number of the "effect" allele at the causal locus and $P(X = x)$ represents the frequency of the $x$ genotype in the population under random mating [^1]. We can easily extend this to the case where multiple causal variants underlie the phenotype: $\mathbb{E}(Y) = 2\sum_s \beta_s F_s$.
+
+
+## Expected value of the difference in phenotype between populations
+
+Now, let's think of two populations that diverged from a common ancestral population some $t$ generations ago. Let's denote the expected value of the phenotype in population 1 as $\mathbb{E}(Y_1) = 2 \beta F_{1}$ and in population 2 as $\mathbb{E}(Y_2) = 2 \beta F_{2}$. Note, that I'm assuming same effect size between populations. Then the expected value of the difference between the two populations is [^2]:
+
+$$\begin{aligned}
+\mathbb{E}(Y_1 - Y_2) =  \mathbb{E}(Y_1) - \mathbb{E}(Y_2) \\
+= 2 \beta F_{1} - 2 \beta F_{2} = 2 \beta(F_{1} - F_{2})
+\end{aligned}$$
+
+Therefore, the expected difference in phenotype between the two populations really boils down to the difference in frequency between the two populations. Note, that the frequencies themselves are random variables, i.e. their realized values depend on a random evolutionary process - genetic drift (assuming no mutation or selection). So, to understand the expectation of the phenotypic difference between populations, we must derive the expectation of the difference in frequency ($\mathbb{E}(F_1 - F_2) = \mathbb{E}(F_1) - \mathbb{E}(F_2)$).
+
+Now, assume that the frequency in the ancestral population was $f$ (known, not a random variable). Then we know that under genetic drift, the $\mathbb{E}(F_1) = \mathbb{E}(F_2) = f$. We know this through Hardy-Weinberg:
+
+In the first generation of population 1, after its split from the ancestral population, the $\mathbb{E}(F_1) = f$.
+
+genotype (no. of alleles, $X$) in a randomly sampled individual is a binomial random variable with parameters 2 (the no. of chromosomes in a diploid individual) and $f$ (the frequency of the allele), i.e. $X \sim Bin(2,f)$. The expected genotype is then $\mathbb{E}(X) = 2f$
+the expected genotype frequencies of a biallelic variant with allele frequency $f$ are: $f(AA) = f^2$, $f(Aa) = 2f(1-f)$, and $f(aa) = (1-f)^2$. Then, the expected genotype frequency of the 
+
+$$\begin{aligned}
+\mathbb{E}(Y_1) - \mathbb{E}(Y_2) = \mathbb{E}\{\mathbb{E}(Y_1|F_1)\} -  \\
+= 2 \beta F_{1} - 2 \beta F_{2} = 2 \beta(F_{1} - F_{2})
+\end{aligned}$$
+
+To start with, let's assume there's only one causal locus underlying the trait. The expected genetic value of a randomly chosen individual in a randomly mating population is $2 \beta f_1$. To derive this, let $\beta$ represent the (additive) effect size of the causal variant. The genetic value of 
+
+Let $G_1$ be the genetic value of a randomly chosen individual in population 1 and $G_1$ representing the same in population 2. The expected genetic value in a randomly mating population is $E(G_1) = 2 \beta f_1$ assuming an additive model: 
+
+$$\begin{aligned}
+P(Y = 1|A = 0) = \alpha_0,~~ and ~~P(Y = 1|A = 1) = \alpha_1
+\end{aligned}$$
+
+
+[^1]: Hard-Weinberg.
+[^2]: From the linearity of expectations (see [this](https://en.wikipedia.org/wiki/Expected_value#Basic_properties) Wikipedia entry)
+
+
+
