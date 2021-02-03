@@ -38,11 +38,11 @@ slug: a-general-model-for-the-bias-in-variant-effect-sizes-due-to-population-str
 <p><span class="math display">\[\begin{aligned}
 y = \mu + g + s + e
 \end{aligned}\]</span></p>
-<p>Here, <span class="math inline">\(\mu\)</span> is the mean phenotypic value in the population, <span class="math inline">\(g\)</span> is the genotypic value (or true polygenic score), <span class="math inline">\(s\)</span> is some environmental effect (I’m only assuming one here), and <span class="math inline">\(e\)</span> is random error. Furthermore, <span class="math inline">\(g = \sum_{i = 1}^m \beta_i x_i\)</span>, where <span class="math inline">\(x_i\)</span> is the genotype and <span class="math inline">\(\beta_i\)</span> is the (true) effect size of the <span class="math inline">\(i^{th}\)</span> SNP summed over <span class="math inline">\(m\)</span> causal variants.</p>
+<p>Here, <span class="math inline">\(\mu\)</span> is the mean phenotypic value in the population, <span class="math inline">\(g\)</span> is the genotypic value (or true polygenic score), <span class="math inline">\(s\)</span> is some environmental effect (I’m only assuming one here), and <span class="math inline">\(e\)</span> is random error. Furthermore, <span class="math inline">\(g = \sum_{i = 1}^m \beta_i x_i\)</span>, where <span class="math inline">\(x_i\)</span> is the genotype and <span class="math inline">\(\beta_i\)</span> is the (true) effect size of the <span class="math inline">\(i^{th}\)</span> (out of <span class="math inline">\(m\)</span>) causal variants.</p>
 </div>
 <div id="the-estimated-effect-size-of-a-variant" class="section level3">
 <h3>The estimated effect size of a variant</h3>
-<p>The ordinary least squares (OLS) effect size of a predictor <span class="math inline">\(X\)</span> on some response <span class="math inline">\(Y\)</span> is <span class="math inline">\(\frac{cov(Y,X)}{var(X)}\)</span>. Thus, in a GWAS with population structure, the effect of the <span class="math inline">\(j^{th}\)</span> (test) variant is:</p>
+<p>The ordinary least squares (OLS) effect size estimate of a predictor <span class="math inline">\(X\)</span> on some response <span class="math inline">\(Y\)</span> is <span class="math inline">\(\frac{cov(Y,X)}{var(X)}\)</span>. Thus, in a GWAS with population structure, the effect estimate of the <span class="math inline">\(j^{th}\)</span> (test) variant is:</p>
 <p><span class="math display">\[\begin{aligned}
 \hat{\beta_j} &amp; = \frac{cov(y,x_j)}{var(x_j)} \\
 &amp; = \frac{cov(\mu + g + s + e, x_j)}{var(x_j)} \\
@@ -55,7 +55,7 @@ y = \mu + g + s + e
 <p>Now, we know that <span class="math inline">\(g = \sum_{i=1}^m \beta_i x_i\)</span>. Thus, we can write <span class="math inline">\(cov(g,x_j)\)</span> as:</p>
 <p><span class="math display">\[\begin{aligned}
 cov(g, x_j) &amp; = cov(\sum_{i = 1}^m \beta_ix_i, x_j) \\
-&amp; = cov(\beta_1x_1, x_j) + cov(\beta_2x_2, x_j) + ... \\
+&amp; = cov(\beta_1x_1, x_j) + cov(\beta_2x_2, x_j) + \cdot\cdot\cdot \\
 &amp; ~~~ + cov(\beta_jx_j, x_j) + \cdot\cdot\cdot + cov(\beta_mx_m, x_j) \\
 &amp; = \beta_1 cov(x_1, x_j) + \beta_2 cov(x_2, x_j) + \cdot\cdot\cdot \\
 &amp; ~~~ + \beta_j cov(x_j, x_j) + \cdot\cdot\cdot + \beta_m cov(x_m, x_j) \\
