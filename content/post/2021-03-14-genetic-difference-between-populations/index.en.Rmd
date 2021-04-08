@@ -209,6 +209,8 @@ Can we not infer this from the direction of the phenotypic difference? Say if po
 
 3. However, we cannot predict (for a neutral trait) which direction the difference is going to take, i.e, we cannot say if population 1 or 2 will have a higher genetic value.
 
+I should point that these conclusions are only applicable to neutral traits. Under directional selection, we do expect systematic differences in mean genotypic value between populations. However, as mentioned earlier, this cannot be inferred directly from differences in phenotypic means between populations. And even differences in genetic means between populations may not be due to selection. More on this at some other undecided time in the future...
+
 #### Acknowledgements
 
 Thanks to [Trang Le](https://twitter.com/trang1618) for giving feedback on an earlier draft of this post.
