@@ -32,7 +32,7 @@ Statistical genetics (broad term for quantitative and population genetics) was t
 
 That said, I believe (and take it from someone who didn't have a math degree in his undergraduate) that there comes a point in genetics where working out the math actually precedes the intuition. This happens for problems, which are too complex to intuit. The math (ironically) helps to simplify them. Therefore, if you're interested in working on such problems, you'll have to get rid of the math anxiety.
 
-Honestly though, one thing I have learned is that most concepts in population and statistical genetics boil down to simple probability theory. I rarely encounter a mathematical expression which cannot be written down as a probability statement. Thus, if you know the core fundamentals of probability (e.g. conditional probability), you can go quite far. So, the second thing I hope to do with this blog is to post derivations for population genetics/statistical genetics concepts built up from first principles of probability theory.
+Honestly though, one thing I have learned is that most concepts in population and statistical genetics boil down to simple probability theory. I rarely encounter a problem which cannot be written down as a probability statement. Thus, if you know the core fundamentals of probability (e.g. conditional probability), you can go quite far. So, the second thing I hope to do with this blog is to post derivations for population genetics/statistical genetics concepts built up from first principles of probability theory.
 
 So welcome to the site and I hope you find it useful. 🙂
 
