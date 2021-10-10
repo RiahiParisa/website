@@ -69,54 +69,60 @@ for(i in 1:11){
   }
 }
 
-image(dmat, main = "Admixture", col = heat.colors(12), 
-      xlab = "Admixture fraction", ylab = "Frequency difference at locus B")
+image(dmat, main = "Admixture LD", col = heat.colors(12), 
+      xlab = bquote("Admixture fraction"~alpha), ylab = "Frequency difference at locus B")
 
 
 ```
 
-We can tell that D is maximized (yellow regions) (i) when $\alpha = 0.5$ (i.e. each population contributes to the admixture event equally), which would make $\alpha(1-\alpha) = 0.25$, *and* (ii) when the product of allele frequency difference $(f_1^A - f_2^A)(f_1^B - f_2^B)$ is 1. The latter is only possible if both $f_1^A - f_2^A = f_1^B - f_2^B = 1$, i.e. if one allele is fixed in one population and absent in the other population. On the other hand, if the allele frequency at either of the two loci are equal between the two populations (i.e.  $f_1^A - f_2^A = 0$ or $f_1^B - f_2^B = 0$), $D = 0$.
+We can tell that there will be no LD between unlinked loci (i.e. $D = 0$ where tiles are red) in an unadmixed (randomly mating) population (i.e. when $\alpha = 0$ or $\alpha = 1$). $D = 0$ also when the allele frequency at either of the two loci are equal between the two populations (i.e.  $f_1^A - f_2^A = 0$ or $f_1^B - f_2^B = 0$). For any other situation ($\alpha >0$ & $|f_1^A - f_2^A| > 0$ & $|f_1^B - f_2^B| > 0$), unlinked loci will be correlated across the genome ($D > 0$ where tiles are more yellow). The requirement that $|f_1^A - f_2^A|$ and $|f_1^A - f_2^A|$ be greater than 0 means that admixture LD only affects loci where the frequencies are different between the two populations, the admixture LD increasing with the difference in frequency.  
+
+Admixture LD is maximized (bright yellow region) when two conditions are met: (i) when $\alpha = 0.5$ (i.e. each population contributes to the admixture event equally), which would make $\alpha(1-\alpha) = 0.25$, *and* (ii) when the product of allele frequency difference $(f_1^A - f_2^A)(f_1^B - f_2^B)$ is 1. The latter is only possible if both $f_1^A - f_2^A = f_1^B - f_2^B = 1$, i.e. if one allele is fixed in one population and absent in the other population.
 
 ### Admixture LD decays pretty rapidly with random mating
 
-So far we've only considered LD right after admixture. Admixture LD between unlinked loci decays pretty rapidly after admixture in a randomly mating population due to recombination between loci and independent assortment. Let's denote admixture LD in generation $t$ since admixture as $D^t$. In a randomly mating population arising from a single admixture event, $D^t = D^0 (1 - r)^t$ [^5] where $r$ is the recombination fraction between two loci and $D^0$ is the admixture LD observed at the time of admixture. Let's plot $D^t$ for two unlinked loci (for which $r = 0.5$).
+So far we've only considered LD right after admixture. Admixture LD between unlinked loci decays pretty rapidly after admixture in a randomly mating population due to recombination between loci and independent assortment (see Fig. 1 again). Let's denote admixture LD in generation $t$ since admixture as $D^t$. In a randomly mating population arising from a single admixture event, $D^t = D^0 (1 - r)^t$ [^5] where $D^0$ is the admixture LD observed at the time of admixture and $r$ is the recombination fraction between the two loci. Let's plot the decay of admixture LD as a function of the $r$ assuming the maximum possible value $D^0$ can take (i.e. 0.25).
 
 ```{r}
 
 suppressPackageStartupMessages(library(ggplot2))
-#range of values of d0 (LD at time of admixture)
-d0 = seq(0.1, 0.25, 0.05)
-dtmat = matrix(NA, nrow = 4, ncol = 10) # matrix to store values of dt
 
-for(i in 1:4){
-  dt = d0[i]
+#range of values of r (recombination fraction)
+r = seq(0, 0.5, 0.1)
+dtmat = matrix(NA, nrow = 6, ncol = 10) # matrix to store values of dt
+
+for(i in 1:6){
+  dt = 0.5
   for(j in 1:10){
     dtmat[i,j] = dt
-    dt = d0[i]*(0.5)^j
+    dt = dt*(1 -r[i])^j
   }
 }
 
 dtmat = reshape2::melt(dtmat)
 
-colnames(dtmat) = c("d0","g","Dt")
+colnames(dtmat) = c("r","g","Dt")
+dtmat$r = (dtmat$r - 1)/10
+
 ggplot(dtmat, 
-                aes(g, Dt, group = d0, color = d0))+
+       aes(g, Dt, group = r, 
+           color = as.factor(r)))+
   geom_line()+
   theme_classic()+
-  theme(legend.position = "none",
-        axis.text = element_text(size = 14),
-        axis.title = element_text(size = 16))+
-  scale_color_viridis_c()+
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 16),
+        legend.title = element_text(size = 14))+
+  scale_color_viridis_d()+
   scale_x_continuous(breaks = c(1:10))+
   labs(x = "Generations since admixture (t)",
-       y = bquote(D[t]))
+       y = bquote(D[t]),
+       color = "r")
 
 ```
 
-As you can see, $D$ decays very quickly between two unlinked loci, reaching almost neglegible values ($<0.05$) just after 5 generations of random mating even when admixture LD was high to begin with (max possible value of $D = 0.25$, yellow line). However, quantitatively, this rate of decay depends on the exact nature of admixture dynamics. Admixture LD will decay more slowly in a population with ancestry-based assortative mating (i.e. where individuals prefer to mate with others of similar ancestry) and if the admixture is continuous (i.e. with an continuous influx of individuals from one or both of the ancestral populations) as opposed to occurring in a single event. Why that happens is beyond the scope of this post but you should look up [Pfaff *et al.* 2001](https://www.cell.com/ajhg/pdf/S0002-9297(07)62484-7.pdf) and [Zaitlen *et al.* 2017](https://pubmed.ncbi.nlm.nih.gov/27879348/) for a deeper treatment (with nice and clear notation) of this topic.
+As you can see, $D$ decays very quickly between loci, but especially when the loci are not unlinked (i.e. $r = 0.5$, yellow line), reaching almost neglegible values just after 4 generations of random mating. However, the rate of decay shown here is if the admixed population were mating randomly. Admixture LD will decay more slowly in a population with ancestry-based assortative mating (i.e. where individuals prefer to mate with others of similar ancestry) and/or if the admixture is continuous (i.e. with an continuous influx of individuals from one or both of the ancestral populations) as opposed to occurring in a single event. Why that happens is beyond the scope of this post but you should look up [Pfaff *et al.* 2001](https://www.cell.com/ajhg/pdf/S0002-9297(07)62484-7.pdf) and [Zaitlen *et al.* 2017](https://pubmed.ncbi.nlm.nih.gov/27879348/) for a deeper treatment (with nice and clear notation) of this topic.
 
-LD between unlinked loci can also be generated due to population structure or assortative mating in the population (non-random mating broadly). Thus, admixture LD is a special instance of a more general phenomenon whereby demographic processes (e.g. population structure and assortative mating) can induce correlations across the genome. Sometimes people call this type of LD gametic phase disequilibrium (how's that for a mouthful) to distinguish it from LD due to physical linkage. The correlations between unlinked loci that arise due to population structure and admixture is sometimes called the multi-locus Wahlund effect.
-
+LD between unlinked loci can also be generated due to population structure or assortative mating in the population (non-random mating broadly). Thus, admixture LD is a special instance of a more general phenomenon whereby demographic processes (e.g. population structure and assortative mating) can induce correlations across the genome. The correlations between unlinked loci that arise due to population structure and admixture is sometimes called the multi-locus Wahlund effect. Sometimes people call this type of LD gametic phase disequilibrium (how's that for a mouthful) to distinguish it from LD due to physical linkage.
 
 
 #### Footnotes
