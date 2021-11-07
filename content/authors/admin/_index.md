@@ -27,17 +27,17 @@ interests:
 - Complex traits
 - Mitochondrial DNA
 
-education:
-  courses:
-  - course: PhD in Genetics (minor in statistics)
-    institution: Penn State University
-    year: 2016
-  - course: MSc in Genetics
-    institution: University of Karachi
-    year: 2009
-  - course: BSc in Genetics
-    institution: University of Karachi
-    year: 2007
+# education:
+#   courses:
+#   - course: PhD in Genetics (minor in statistics)
+#     institution: Penn State University
+#     year: 2016
+#   - course: MSc in Genetics
+#     institution: University of Karachi
+#     year: 2009
+#   - course: BSc in Genetics
+#     institution: University of Karachi
+#     year: 2007
 
 # Social/Academic Networking
 # For available icons, see: https://sourcethemes.com/academic/docs/page-builder/#icons
@@ -58,9 +58,9 @@ social:
   link: https://github.com/Arslan-Zaidi
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
-# - icon: cv
-#   icon_pack: ai
-#   link: files/cv.pdf
+- icon: cv
+  icon_pack: ai
+  link: files/cv.pdf
 
 # Enter email to display Gravatar (if Gravatar enabled in Config)
 email: ""
@@ -75,6 +75,6 @@ email: ""
 My name is Arslan Zaidi and I'm a statistical geneticist at the University of Pennsylvania. I'm interested in understanding how demographic processes such as admixture, population bottlenecks, expansions, non-random mating, and selection shape genetic variation underlying complex traits in humans.
 
 
-I am from Pakistan, where I completed my undergraduate degree in genetics from the University of Karachi under the mentorship of Dr. Ahsan Vahidy. My graduate work, which I did with <a href="http://anth.la.psu.edu/research/research-labs/genomics/the-lab/people">Mark Shriver</a>&nbsp;at Penn State, focused on studying the evolutionary genetics of physical traits such as skin pigmentation and 3D facial shape. Then I did a postdoc with <a href="http://www.bx.psu.edu/makova_lab/">Kateryna Makova</a>, also at Penn State, where I studied the transmission dynamics of mitochondrial DNA heteroplasmies in human families, and mito-nuclear interactions in admixed populations. Currently, I'm a postdoc with <a href="https://www.med.upenn.edu/mathieson-lab/">Iain Mathieson</a> at The University of Pennsylvania. I'm studying how human demographic history and population stratification impact the inference of complex trait architecture. I am also investigating whether or not (and to what extent) mitochondrial-nuclear epistasis contribute to phenotypic variation in humans.
+I am from Pakistan, where I completed my undergraduate degree in genetics from the University of Karachi under the mentorship of Dr. Ahsan Vahidy. My graduate work, which I did with <a href="http://anth.la.psu.edu/research/research-labs/genomics/the-lab/people">Mark Shriver</a>&nbsp;at Penn State, focused on studying the evolutionary genetics of physical traits such as skin pigmentation and 3D facial shape. Then I did a postdoc with <a href="http://www.bx.psu.edu/makova_lab/">Kateryna Makova</a>, also at Penn State, where I studied the transmission dynamics of mitochondrial DNA heteroplasmies in human families, and mito-nuclear interactions in admixed populations. Currently, I'm an NIH K99/R00 postdoctoral fellow with <a href="https://www.med.upenn.edu/mathieson-lab/">Iain Mathieson</a> at The University of Pennsylvania. I'm studying how human demographic history and population stratification impact the inference of complex trait architecture. I am also investigating whether or not (and to what extent) mitochondrial-nuclear epistasis contribute to phenotypic variation in humans.
 
 You can reach me at aazaidi [at] pennmedicine [dot] upenn [dot] edu.
