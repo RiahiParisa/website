@@ -1,0 +1,54 @@
+---
+title: "PopGen_Chapter1.rmarkdown"
+author: "Nicole, Parisa, Sol"
+date: "2024-07-18"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#install.packages(blogdown)
+library(blogdown)
+```
+
+## Problem 1.1 - Nicole
+
+```{r problem1.1}
+
+```
+
+## Problem 1.2 - Sol
+
+```{r problem1.2}
+
+```
+
+## Problem 1.3 - Nicole
+
+```{r problem1.3}
+
+```
+
+## Problem 1.4 - Parisa
+
+```{r problem1.4}
+
+```
+
+## Problem 1.5 - Parisa
+
+```{r problem1.5}
+
+```
+
+## Problem 1.6 - Sol
+
+```{r problem1.6}
+
+```
+
+## Problem 1.7 - Sol
+
+```{r problem1.7}
+
+```
