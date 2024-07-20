@@ -1,0 +1,112 @@
+---
+title: "PopGen_Chapter1.rmarkdown"
+author: "Nicole, Parisa, Sol"
+date: "2024-07-18"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#install.packages(blogdown)
+library(blogdown)
+```
+
+## Problem 1.1 - Nicole
+
+```{r problem1.1}
+
+```
+
+## Problem 1.2 - Sol
+
+The frequency for one of the three alkaline phosphatase alleles can be described as follows:
+
+S = p(S|SS) + p(S|SF) + p(S|SI)
+
+In words: the probability of S if an individual is SS (1), the probability of S if an individual is SF (1/2) and the probability of S if an individual is SI (1/2). A similar pattern can be repeated for the other 2 alleles. To calculate each of the frequencies we can just use the frequencies of each genotype from Table 1.2 (reproduced below):
+
+\textbf{Table 1.2 - Replicated from (Gillespie, 2004)}
+\begin{tabular}{ |c|c|c|c| } 
+\hline
+Genotype & Number & Frequency & Expected \\
+\hline
+SS & 141 & 0.4247 & 0.4096\\ 
+SF & 111 & 0.3343 & 0.3507 \\ 
+FF & 28 & 0.0843 & 0.0751\\ 
+SI & 32 & 0.0964 & 0.1101\\ 
+FI & 15 & 0.0452 & 0.0471\\ 
+II & 5 & 0.0151 & 0.0074 \\ 
+\hline
+Total & 332 & 1.000 & 1.000 \\
+\hline
+\end{tabular}
+
+Based on Table 1.2 and the example written out above, the frequencies for each of the alleles is:\
+
+S = (1 x 0.4247) + (1/2 x 0.3343) + (1/2 x 0.0964) = 0.6401 \
+F = (1 x 0.0843) + (1/2 x 0.3343) + (1/2 x 0.0452) = 0.2741 \
+I = (1 x 0.0151) + (1/2 x 0.0964) + (1/2 x 0.0452) = 0.0859 \
+
+As a sanity check, you can see that the frequencies of the three alleles add up to 1 since they make up all of the alleles in the population, thus combined they have a frequency of 100%. 
+
+## Problem 1.3 - Nicole
+
+```{r problem1.3}
+
+```
+
+## Problem 1.4 - Parisa
+
+```{r problem1.4}
+
+```
+
+## Problem 1.5 - Parisa
+
+```{r problem1.5}
+
+```
+
+## Problem 1.6 - Sol
+
+A copy of Table 1.2 from the text is available under problem 1.2 above. The $\chi^2$ test for the agreement of the data in Table 1.2 with Hardy-Weinberg law can be conducted manually using the $\chi^2$ formula: \[\chi^2=\sum\frac{(O_i-E_i)^2}{E_i}\]
+To calculate the $\chi^2$ value for each genotype we will first multiply the values in the Expected frequency column and the Frequency column from Table 1.2 by 332 (the total number of individuals). The expected frequencies is what we would expect to observe under Hardy-Weinberg law, whereas Frequency is what is actually observed. Then we will calculate the $\chi^2$ value for each genotype and add the values together to get the total $\chi^2$ value as follows:
+```{r problem1.6}
+#Data columns taken from Table 1.2:
+Genotypes<-c("SS","SF","FF","SI","FI","II")
+Observed<-c(141,111,28,32,15,5)
+ObservedFreq<-c(0.4247, 0.3343, 0.0843, 0.0964, 0.0452, 0.0151)
+ExpectedFreq<-c(0.4096, 0.3507, 0.0751, 0.1101, 0.0471, 0.0074)
+
+#Creating Table based off of Table 1.2 (just binding columns together into dataframe):
+Chi_Squared_Table<- data.frame(Genotypes, Observed, ExpectedFreq)
+
+#Calculating Expected Counts (Expected Frequency * Total # individuals) and Observed Counts (based on observed frequency instead of actual counts for consistency) for each row:
+Chi_Squared_Table$ObservedCounts<-ObservedFreq*332
+Chi_Squared_Table$ExpectedCounts<-ExpectedFreq*332
+
+#Calculating the chi-squared value for each row based on the equation above
+Chi_Squared_Table$Chi_Squared<-(Chi_Squared_Table$ObservedCounts-Chi_Squared_Table$ExpectedCounts)^2 / Chi_Squared_Table$ExpectedCounts
+print(Chi_Squared_Table)
+
+#Adding together the Chi-squared values to get the sum:
+Chi_Squared_Sum<-sum(Chi_Squared_Table$Chi_Squared)
+Chi_Squared_Sum
+```
+
+Once we have calculated the $\chi^2$ above (4.065) we can use a chi-square table or the following code to calculate the p-value:
+```{r problem1.6_part2}
+#The following code subtracts the area under the curve corresponding to the chi-squared value from 1 to get the p value:
+pvalue=1-pchisq(Chi_Squared_Sum, 3) # df=3
+pvalue
+```
+The reason that we are using three degrees of freedom instead of 5 (n-1) because the genotypes are not independent; we've already used information about the allele frequencies to calculate the expected genotype frequencies and the frequencies of alleles are constrained because they must add up to 1. Generally speaking, the degrees of freedom in a Hardy-Weinberg test = #genotypes - #alleles. 
+
+
+Based on the p-value (0.255) there is insufficient evidence that the observed frequencies differ significantly from those predicted by Hardy-Weinberg law. 
+
+## Problem 1.7 - Sol
+
+```{r problem1.7}
+
+```
