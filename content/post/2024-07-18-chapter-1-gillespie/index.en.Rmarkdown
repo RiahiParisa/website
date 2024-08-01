@@ -57,11 +57,39 @@ As a sanity check, you can see that the frequencies of the three alleles add up 
 
 ## Problem 1.4 - Parisa
 
+Graph the frequencies of homozygotes and heterozygotes as a function of allele frequency p. At what allele frequency is the frequency of the heterozygotes maximized? 
+
+
 ```{r problem1.4}
+
+# Define the sequence of allele frequencies (p) from 0 to 1
+p <- seq(0, 1, length.out = 20)
+
+# Calculate the complementary allele frequency (q)
+q <- 1 - p
+
+# Calculate the frequencies of the three genotypes
+homozygote_A1A1 <- p^2
+homozygote_A2A2 <- q^2
+heterozygote_A1A2 <- 2 * p * q
+
+# Plot the frequencies of the homozygote A1A1 genotype
+plot(p, homozygote_A1A1, type = "l", col = "darkblue", ylim = c(0, 1),
+     ylab = "Genotype Frequency", xlab = "Allele Frequency (p)", lwd = 2,
+     main = "Genotype Frequencies vs Allele Frequency")
+
+# Add lines for the frequencies of the other two genotypes
+lines(p, homozygote_A2A2, col = "darkgreen", lwd = 2)
+lines(p, heterozygote_A1A2, col = "darkred", lwd = 2)
+
+# Add a legend to the plot
+legend("topright", legend = c("Homozygote A1A1", "Homozygote A2A2", "Heterozygote A1A2"),
+       col = c("darkblue", "darkgreen", "darkred"), lwd = 2)
 
 ```
 
 ## Problem 1.5 - Parisa
+
 
 ```{r problem1.5}
 
