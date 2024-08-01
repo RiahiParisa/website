@@ -57,15 +57,94 @@ As a sanity check, you can see that the frequencies of the three alleles add up 
 
 ## Problem 1.4 - Parisa
 
-```{r problem1.4}
+Graph the frequencies of homozygotes and heterozygotes as a function of allele frequency p.
+ At what allele frequency is the frequency of the heterozygotes maximized? 
 
+
+```{r problem1.4}
+# Define the sequence of allele frequencies (p) from 0 to 1
+p <- seq(0, 1, length.out = 20)
+
+# Calculate the complementary allele frequency (q)
+q <- 1 - p
+
+# Calculate the frequencies of the three genotypes
+homozygote_A1A1 <- p^2
+homozygote_A2A2 <- q^2
+heterozygote_A1A2 <- 2 * p * q
+
+# Plot the frequencies of the homozygote A1A1 genotype
+plot(p, homozygote_A1A1, type = "l", col = "darkblue", ylim = c(0, 1),
+     ylab = "Genotype Frequency", xlab = "Allele Frequency (p)", lwd = 2,
+     main = "Genotype Frequencies vs Allele Frequency")
+
+# Add lines for the frequencies of the other two genotypes
+lines(p, homozygote_A2A2, col = "darkgreen", lwd = 2)
+lines(p, heterozygote_A1A2, col = "darkred", lwd = 2)
+
+# Add a legend to the plot
+legend("topright", legend = c("Homozygote A1A1", "Homozygote A2A2", "Heterozygote A1A2"),
+       col = c("darkblue", "darkgreen", "darkred"), lwd = 2)
 ```
+
+let's explore how genotype frequencies change with different allele frequencies (p).
+
+1. **Allele Frequencies (p and q)**: p represents the frequency of allele A1 and ranges from 0 to 1. q is the frequency of allele A2, calculated as 1 - p.
+
+2. **Genotype Frequencies**: Using Hardy-Weinberg equilibrium, the frequencies of the genotypes are:
+
+ - Homozygote A1A1: p^2\n
+ 
+ - Homozygote A2A2: q^2\n
+
+ - Heterozygote A1A2: 2pq
+
+3. **Plotting**: The frequencies of these genotypes are plotted against the allele frequency p using different colors. A legend is added to identify the genotypes.
+
+From the plot, we can see how the frequencies of the genotypes change as the allele frequency p changes from 0 to 1. When p is low, the frequency of homozygote A2A2 is high, and as p increases, the frequency of homozygote A1A1 increases. The frequency of the heterozygote A1A2 genotype peaks at p = 0.5. This can be estimated using the derivation, as f(p)=2 * p *(1-p). The function reaches its maximum at 0.5 because if we do f'(p) = 0, then p=0.5. 
+
 
 ## Problem 1.5 - Parisa
 
-```{r problem1.5}
+Graph the ratio of the frequencies   A1A2 heterozygotes to A2A2 homozygotes as a function of q using both the exact and approximate formulas. 
 
+```{r problem1.5}
+# Define the sequence of allele frequencies (q) from 0 to 0.5
+q <- seq(0, 0.5, length.out = 20)
+
+# Calculate the exact ratio of heterozygote A1A2 to homozygote A2A2
+exact_ratio_A1A2_to_A2A2 <- 2 * (1 - q) * q / q^2
+
+# Calculate the approximate ratio of heterozygote A1A2 to homozygote A2A2
+approx_ratio_A1A2_to_A2A2 <- 2 / q
+
+# Plot the exact and approximate ratios
+plot(q, exact_ratio_A1A2_to_A2A2, type = "l", col = "purple", ylim = c(0, max(exact_ratio_A1A2_to_A2A2, na.rm = TRUE)),
+     xlim = c(0, 0.5), ylab = "Ratio of A1A2 to A2A2", xlab = "Allele Frequency (q)",
+     main = "Exact vs Approximate Ratios of A1A2 to A2A2", lwd = 2)
+lines(q, approx_ratio_A1A2_to_A2A2, col = "orange", lwd = 2, lty = 2)
+
+# Add a legend to the plot
+legend("topright", legend = c("Exact Ratio", "Approximate Ratio"),
+       col = c("purple", "orange"), lwd = 2, lty = c(1, 2))
 ```
+
+let's compare the exact and approximate ratios of heterozygote A1A2 to homozygote A2A2.
+
+1. **Allele Frequencies (q)**:q represents the frequency of allele A2 and ranges from 0 to 0.5.
+
+2. **Exact Ratio Calculation**: The exact ratio of heterozygote A1A2 to homozygote A2A2 is calculated using the formula (2(1-q)q) / q^2.
+
+3. **Approximate Ratio Calculation**: The approximate ratio of heterozygote A1A2 to homozygote A2A2 is calculated using the formula 2 / q.
+
+4. **Plotting**: Both the exact and approximate ratios are plotted against the allele frequency q using different colors and line types. A legend is added to identify the ratios.
+
+From the plot, we can observe that both the exact and approximate ratios of heterozygote A1A2 to homozygote A2A2 increase as the allele frequency q decreases. 
+
+The approximate ratio (orange dashed line) is a good estimate of the exact ratio (purple solid line), especially for small values of q. As q approaches 0, the ratios diverge slightly, but the approximation remains fairly accurate.
+
+This demonstrates how a simple approximation can be used to estimate the ratio without significantly losing accuracy.
+
 
 ## Problem 1.6 - Sol
 
