@@ -106,7 +106,69 @@ The reason that we are using three degrees of freedom instead of 5 (n-1) because
 Based on the p-value (0.255) there is insufficient evidence that the observed frequencies differ significantly from those predicted by Hardy-Weinberg law. 
 
 ## Problem 1.7 - Sol
+Each generation, females will receive one X chromosome from both parents, whereas males will only receive one X chromosome from their mothers. Therefore each generation the males will have the same allele frequency for X-linked alleles as the females in the previous generation, but females will have an allele frequency that is the average from males and females in the previous generation. Therefore with starting allele frequencies of $p_f$ in females and $p_m$ in males, 3 generations of allele frequencies would be as follows:
 
-```{r problem1.7}
 
+\begin{tabular}{ |c|c|c| } 
+\hline
+Generation & Female Freq. & Male Freq. \\
+\hline
+1 & \( p_f \) & \( p_m \) \\
+\hline
+2 & \( \begin{array}{@{}c@{}} \dfrac{p_f - p_m}{2} \end{array} \) & \( p_f \) \\
+\hline
+3 & \( \begin{array}{@{}c@{}} (\dfrac{p_f - p_m}{2}) + p_f/2 \end{array} \) & \(\begin{array}{@{}c@{}} \dfrac{p_f - p_m}{2} \end{array} \) \\
+\hline
+\end{tabular}
+
+If we start with a population in which all females are $A_1A_1$ and all males are $A_2$ (ie females have an $A_1$ allele frequency of 1 and males have a frequency of 0), we can calculate the allele frequencies for subsequent generations based on the pattern we have shown above:
+
+\begin{tabular}{ |c|c|c|c| } 
+\hline
+Generation & F. Freq & M. Freq & F-M Freq. \\
+\hline
+1 & 1 & 0 & 1 \\
+\hline
+2 & 1/2 & 1 & -1/2 \\
+\hline
+3 & 3/4 & 1/2 & 1/4 \\
+\hline
+4 & 5/8 & 3/4 & -1/8 \\
+\hline
+5 & 11/16 & 5/8 & 1/16 \\
+\hline
+6 & 21/32 & 11/16 & -1/32 \\
+\hline
+\end{tabular}
+
+As mentioned above, you can see in the table that each generation males have the same $A_1$ frequency as females in the generation prior and females have the averaged $A_1$ frequency of males and females in the generation prior. Due to this, each generation the difference in $A_1$ frequency between males and females is halved. I have graphed 8 generations below:
+
+```{r problem1.7, echo=FALSE}
+#Data from extending the table above out to 8 generations:
+Generations<-c(1,2,3,4,5,6,7,8)
+Males<-c(0,1,0.5,0.75,0.625, 0.688,0.656, 0.672)
+Females<-c(1,0.5,0.75, 0.625, 0.688, 0.656, 0.672, 0.664)
+
+#Manipulating data to create dataframe that works well for graphing
+MaleTable<-data.frame(Generations,Males)
+MaleTable$Sex<-"Male"
+colnames(MaleTable)<-c("Generations", "A1_Freq", "Sex")
+
+FemaleTable<-data.frame(Generations,Females)
+FemaleTable$Sex<-"Female"
+colnames(FemaleTable)<-c("Generations", "A1_Freq", "Sex")
+
+#Binding male and female tables together
+AllTable<-rbind(MaleTable, FemaleTable)
+
+#Graphing:
+MF_Graph <- ggplot(AllTable, aes(x=Generations, y=A1_Freq, color=Sex))+
+  geom_line()+
+  geom_point()+
+  ggtitle("A1 Frequency Over 8 Generations in Males & Females")+
+  theme_minimal()
+
+MF_Graph
 ```
+
+As can be seen in the figure, eventually both males and females approach the same value which is approximately 0.66 or 2/3. This makes sense because females have 2/3 of the X chromosomes in the population (XX) whereas males only have 1/3 of the X chromosomes (XY). Therefore since in the beginning all of females were $A_1A_1$ 2/3 of the X chromosomes in the entire population were $A_1$ and only 1/3 were $A_2$ since all males started off as $A_2$. Therefore as time goes on, both males and females approach the starting frequency of $A_1$ in the entire population (2/3). If we instead graphed the frequency of $A_2$ in the population, both males and females would converge on an $A_2$ frequency of 1/3, since originally 1/3 of the alleles at this locus in the population were $A_2$ (since in Gen 1 all males were $A_2$)
